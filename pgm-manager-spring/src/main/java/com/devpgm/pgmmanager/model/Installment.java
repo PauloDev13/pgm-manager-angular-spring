@@ -35,6 +35,8 @@ public class Installment {
 
     private boolean finished;
 
+    private int duration;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;

@@ -1,5 +1,7 @@
 package com.devpgm.pgmmanager.dto;
 
+import com.devpgm.pgmmanager.model.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +14,11 @@ public record InstallmentRespDTO(
         @NotNull @NotBlank @Length(min = 5, max = 100)
         String secretary,
         boolean finished,
+        int duration,
         Date createdAt,
-        Date updatedAt
+        Date updatedAt,
+
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+        Customer customer
 
 ) {}

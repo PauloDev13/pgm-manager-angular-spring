@@ -23,8 +23,10 @@ public class CustomerMapper {
                         installment.getBadge(),
                         installment.getSecretary(),
                         installment.isFinished(),
+                        installment.getDuration(),
                         installment.getCreatedAt(),
-                        installment.getUpdatedAt()
+                        installment.getUpdatedAt(),
+                        installment.getCustomer()
                         )
                 ).toList();
 
