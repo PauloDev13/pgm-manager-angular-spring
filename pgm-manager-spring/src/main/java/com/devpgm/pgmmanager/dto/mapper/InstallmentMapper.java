@@ -17,8 +17,7 @@ public class InstallmentMapper {
                 installment.getSecretary(),
                 installment.isFinished(),
                 installment.getCreatedAt(),
-                installment.getUpdatedAt(),
-                installment.getCustomer()
+                installment.getUpdatedAt()
         );
     }
 
@@ -33,7 +32,6 @@ public class InstallmentMapper {
         installment.setFinished(installmentRespDTO.finished());
         installment.setCreatedAt(installmentRespDTO.createdAt());
         installment.setUpdatedAt(installmentRespDTO.updatedAt());
-        installment.setCustomer(installmentRespDTO.customer());
 
         return installment;
     }

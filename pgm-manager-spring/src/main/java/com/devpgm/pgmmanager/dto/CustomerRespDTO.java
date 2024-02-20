@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.List;
 
-public record CustomerResponseDTO(
+public record CustomerRespDTO(
         Long id,
         @NotNull @NotBlank @Length(min = 5) String name,
         @NotNull @NotBlank @Length(max = 11) String document,

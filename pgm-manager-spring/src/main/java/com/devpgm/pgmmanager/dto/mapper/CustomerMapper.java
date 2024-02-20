@@ -1,7 +1,7 @@
 package com.devpgm.pgmmanager.dto.mapper;
 
-import com.devpgm.pgmmanager.dto.CustomerRequestDTO;
-import com.devpgm.pgmmanager.dto.CustomerResponseDTO;
+import com.devpgm.pgmmanager.dto.CustomerReqDTO;
+import com.devpgm.pgmmanager.dto.CustomerRespDTO;
 import com.devpgm.pgmmanager.dto.InstallmentRespDTO;
 import com.devpgm.pgmmanager.model.Customer;
 import com.devpgm.pgmmanager.model.Installment;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class CustomerMapper {
-    public CustomerResponseDTO toDTO(Customer customer) {
+    public CustomerRespDTO toDTO(Customer customer) {
         if (customer == null) {
             return null;
         }
@@ -24,12 +24,11 @@ public class CustomerMapper {
                         installment.getSecretary(),
                         installment.isFinished(),
                         installment.getCreatedAt(),
-                        installment.getUpdatedAt(),
-                        installment.getCustomer()
+                        installment.getUpdatedAt()
                         )
                 ).toList();
 
-        return new CustomerResponseDTO(
+        return new CustomerRespDTO(
                 customer.getId(),
                 customer.getName(),
                 customer.getDocument(),
@@ -39,7 +38,7 @@ public class CustomerMapper {
         );
     }
 
-    public Customer toEntity(CustomerResponseDTO customerResponseDTO) {
+    public Customer toEntity(CustomerRespDTO customerResponseDTO) {
         if (customerResponseDTO == null) {
             return null;
         }
@@ -73,7 +72,7 @@ public class CustomerMapper {
         return customer;
     }
 
-    public Customer toEntity(CustomerRequestDTO requestDTO) {
+    public Customer toEntity(CustomerReqDTO requestDTO) {
         if (requestDTO == null) {
             return null;
         }
@@ -85,17 +84,6 @@ public class CustomerMapper {
         }
         customer.setName(requestDTO.name());
         customer.setDocument(requestDTO.document());
-
-        List<Installment> installmentList = requestDTO.installments()
-                .stream()
-                .map(installmentRespDTO -> {
-                    var installment = new Installment();
-                    installment.setId(installmentRespDTO.id());
-                    installment.setBadge(installmentRespDTO.badge());
-                    installment.setCustomer(customer);
-                    return installment;
-                }).toList();
-        customer.setInstallments(installmentList);
 
         return customer;
     }

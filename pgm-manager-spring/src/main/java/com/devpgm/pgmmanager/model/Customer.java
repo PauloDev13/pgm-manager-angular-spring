@@ -2,13 +2,12 @@ package com.devpgm.pgmmanager.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
@@ -33,20 +32,17 @@ public class Customer {
     @NotNull
     @NotBlank
     @Length(max = 11)
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 11, unique = true)
     private String document;
 
     @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @NotNull
-    @NotEmpty
-    @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
     private List<Installment> installments = new ArrayList<>();
 

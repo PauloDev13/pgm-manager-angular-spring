@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
 
@@ -47,5 +49,11 @@ public class ApplicationControllerAdvice {
     return ex.getName() + " Deve ser do tipo " + typeName;
     }
     return "O tipo de argumento não é válido";
+  }
+
+  @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public String  handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+    return ex.getMessage();
   }
 }
