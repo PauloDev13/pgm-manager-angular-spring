@@ -1,8 +1,8 @@
 package com.devpgm.pgmmanager.dto.mapper;
 
-import com.devpgm.pgmmanager.dto.CustomerReqDTO;
-import com.devpgm.pgmmanager.dto.CustomerRespDTO;
-import com.devpgm.pgmmanager.dto.InstallmentRespDTO;
+import com.devpgm.pgmmanager.dto.*;
+import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
+import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
 import com.devpgm.pgmmanager.model.Customer;
 import com.devpgm.pgmmanager.model.Installment;
 import org.springframework.stereotype.Component;
@@ -11,82 +11,76 @@ import java.util.List;
 
 @Component
 public class CustomerMapper {
-    public CustomerRespDTO toDTO(Customer customer) {
-        if (customer == null) {
-            return null;
-        }
 
-        List<InstallmentRespDTO> installments = customer.getInstallments()
-                .stream()
-                .map(installment -> new InstallmentRespDTO(
-                        installment.getId(),
-                        installment.getBadge(),
-                        installment.getSecretary(),
-                        installment.isFinished(),
-                        installment.getDuration(),
-                        installment.getCreatedAt(),
-                        installment.getUpdatedAt(),
-                        installment.getCustomer()
-                        )
-                ).toList();
-
-        return new CustomerRespDTO(
-                customer.getId(),
-                customer.getName(),
-                customer.getDocument(),
-                customer.getCreatedAt(),
-                customer.getUpdatedAt(),
-                installments
-        );
+  public CustomerDTO toCustomerDTO(Customer customer) {
+    if (customer == null) {
+      return null;
     }
 
-    public Customer toEntity(CustomerRespDTO customerResponseDTO) {
-        if (customerResponseDTO == null) {
-            return null;
-        }
-
-        Customer customer = new Customer();
-
-        if (customerResponseDTO.id() != null) {
-            customer.setId(customerResponseDTO.id());
-        }
-
-        customer.setName(customerResponseDTO.name());
-        customer.setDocument(customerResponseDTO.document());
-        customer.setCreatedAt(customerResponseDTO.createdAt());
-        customer.setUpdatedAt(customerResponseDTO.updatedAt());
-
-        List<Installment> installmentList = customerResponseDTO.installments()
-                .stream()
-                .map(installmentRespDTO -> {
-                    var installment = new Installment();
-                    installment.setId(installmentRespDTO.id());
-                    installment.setBadge(installmentRespDTO.badge());
-                    installment.setFinished(installmentRespDTO.finished());
-                    installment.setCreatedAt(installmentRespDTO.createdAt());
-                    installment.setUpdatedAt(installmentRespDTO.updatedAt());
-                    installment.setCustomer(customer);
-                    return installment;
-                }).toList();
-
-        customer.setInstallments(installmentList);
-
-        return customer;
+    return new CustomerDTO(
+        customer.getId(),
+        customer.getName(),
+        customer.getDocument()
+    );
+  }
+  public CustomerRespDTO toDTO(Customer customer) {
+    if (customer == null) {
+      return null;
     }
 
-    public Customer toEntity(CustomerReqDTO requestDTO) {
-        if (requestDTO == null) {
-            return null;
-        }
+    return new CustomerRespDTO(
+        customer.getId(),
+        customer.getName(),
+        customer.getDocument(),
+        customer.listInstallmentDTO()
+    );
+  }
 
-        Customer customer = new Customer();
-
-        if(requestDTO.id() != null) {
-            customer.setId(requestDTO.id());
-        }
-        customer.setName(requestDTO.name());
-        customer.setDocument(requestDTO.document());
-
-        return customer;
+  public Customer toEntity(CustomerRespDTO customerResponseDTO) {
+    if (customerResponseDTO == null) {
+      return null;
     }
+
+    Customer customer = new Customer();
+
+    if (customerResponseDTO.id() != null) {
+      customer.setId(customerResponseDTO.id());
+    }
+
+    customer.setName(customerResponseDTO.name());
+    customer.setDocument(customerResponseDTO.document());
+
+    List<Installment> installmentList = customerResponseDTO.installments()
+        .stream()
+        .map(installmentRespDTO -> {
+          var installment = new Installment();
+          installment.setId(installmentRespDTO.id());
+          installment.setBadge(installmentRespDTO.badge());
+          installment.setFinished(installmentRespDTO.finished());
+          installment.setCreatedAt(installmentRespDTO.createdAt());
+          installment.setUpdatedAt(installmentRespDTO.updatedAt());
+          installment.setCustomer(customer);
+          return installment;
+        }).toList();
+
+    customer.setInstallments(installmentList);
+
+    return customer;
+  }
+
+  public Customer toEntity(CustomerReqDTO requestDTO) {
+    if (requestDTO == null) {
+      return null;
+    }
+
+    Customer customer = new Customer();
+
+    if (requestDTO.id() != null) {
+      customer.setId(requestDTO.id());
+    }
+    customer.setName(requestDTO.name());
+    customer.setDocument(requestDTO.document());
+
+    return customer;
+  }
 }

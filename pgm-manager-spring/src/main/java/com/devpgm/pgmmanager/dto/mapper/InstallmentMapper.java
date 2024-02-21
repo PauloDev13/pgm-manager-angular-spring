@@ -1,7 +1,7 @@
 package com.devpgm.pgmmanager.dto.mapper;
 
-import com.devpgm.pgmmanager.dto.InstallmentReqDTO;
-import com.devpgm.pgmmanager.dto.InstallmentRespDTO;
+import com.devpgm.pgmmanager.dto.installment.InstallmentReqDTO;
+import com.devpgm.pgmmanager.dto.installment.InstallmentRespDTO;
 import com.devpgm.pgmmanager.model.Installment;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +12,8 @@ public class InstallmentMapper {
             return null;
         }
 
-        return new InstallmentRespDTO(
-                installment.getId(),
-                installment.getBadge(),
-                installment.getSecretary(),
-                installment.isFinished(),
-                installment.getDuration(),
-                installment.getCreatedAt(),
-                installment.getUpdatedAt(),
-                installment.getCustomer()
-        );
+        return installment.listInstallmentDTO();
+
     }
 
     public Installment toEntity(InstallmentReqDTO installmentReqDTO) {

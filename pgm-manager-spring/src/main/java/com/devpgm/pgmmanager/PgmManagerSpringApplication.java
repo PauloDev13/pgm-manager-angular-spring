@@ -11,34 +11,34 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class PgmManagerSpringApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(PgmManagerSpringApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(PgmManagerSpringApplication.class, args);
+  }
 
-    @Bean
-    CommandLineRunner initDatabase(CustomerRepository customerRepository){
-        return args -> {
-            customerRepository.deleteAll();
+  @Bean
+  CommandLineRunner initDatabase(CustomerRepository customerRepository) {
+    return args -> {
+      customerRepository.deleteAll();
 
-            Customer customer = new Customer();
-            customer.setName("Paulo Roberto");
-            customer.setDocument("11111111111");
+      Customer customer = new Customer();
+      customer.setName("Paulo Roberto");
+      customer.setDocument("11111111111");
 
 
-            Installment i = new Installment();
-            i.setSecretary("PGMNET");
-            i.setBadge("02");
-            i.setCustomer(customer);
-            customer.add(i);
+      Installment i = new Installment();
+      i.setSecretary("PGMNET");
+      i.setBadge("02");
+      i.setCustomer(customer);
+      customer.add(i);
 
-            Installment i2 = new Installment();
-            i2.setSecretary("SEMAD");
-            i2.setBadge("04");
-            i2.setCustomer(customer);
-            customer.add(i2);
+      Installment i2 = new Installment();
+      i2.setSecretary("SEMAD");
+      i2.setBadge("04");
+      i2.setCustomer(customer);
+      customer.add(i2);
 
-            customerRepository.save(customer);
-        };
-    }
+      customerRepository.save(customer);
+    };
+  }
 
 }

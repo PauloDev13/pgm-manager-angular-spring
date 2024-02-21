@@ -1,7 +1,7 @@
 package com.devpgm.pgmmanager.controller;
 
-import com.devpgm.pgmmanager.dto.InstallmentReqDTO;
-import com.devpgm.pgmmanager.dto.InstallmentRespDTO;
+import com.devpgm.pgmmanager.dto.installment.InstallmentReqDTO;
+import com.devpgm.pgmmanager.dto.installment.InstallmentRespDTO;
 import com.devpgm.pgmmanager.service.InstallmentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,16 +17,16 @@ import java.util.List;
 @RestController
 @RequestMapping("api/installments")
 public class InstallmentController {
-    private final InstallmentService installmentService;
+  private final InstallmentService installmentService;
 
-    @GetMapping
-    public List<InstallmentRespDTO> installments() {
-        return installmentService.installments();
-    }
+  @GetMapping
+  public List<InstallmentRespDTO> installments() {
+    return installmentService.installments();
+  }
 
-    @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public InstallmentRespDTO create(@RequestBody @NotNull @Valid InstallmentReqDTO installmentReqDTO) {
-        return installmentService.create(installmentReqDTO);
-    }
+  @PostMapping
+  @ResponseStatus(code = HttpStatus.CREATED)
+  public InstallmentRespDTO create(@RequestBody @NotNull @Valid InstallmentReqDTO installmentReqDTO) {
+    return installmentService.create(installmentReqDTO);
+  }
 }

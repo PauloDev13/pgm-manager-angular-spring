@@ -1,14 +1,15 @@
 package com.devpgm.pgmmanager.service;
 
-import com.devpgm.pgmmanager.dto.CustomerReqDTO;
-import com.devpgm.pgmmanager.dto.CustomerRespDTO;
+import com.devpgm.pgmmanager.dto.CustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
+import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
 
 import java.util.List;
 
 public interface CustomerService {
-    List<CustomerRespDTO> customers();
-    CustomerRespDTO findById(Long id);
-    CustomerRespDTO create(CustomerReqDTO customerReqDTO);
-    CustomerRespDTO update(Long id, CustomerReqDTO customerReqDTO);
-    void delete(Long id);
+  List<CustomerRespDTO> customers();
+  CustomerRespDTO findById(Long id);
+  CustomerDTO create(CustomerReqDTO customerReqDTO);
+  CustomerRespDTO update(Long id, CustomerReqDTO customerReqDTO);
+  void delete(Long id);
 }

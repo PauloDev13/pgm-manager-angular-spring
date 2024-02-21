@@ -46,14 +46,20 @@ public class ApplicationControllerAdvice {
       String type = ex.getRequiredType().getName();
       String[] typeParts = type.split("\\.");
       String typeName = typeParts[typeParts.length - 1];
-    return ex.getName() + " Deve ser do tipo " + typeName;
+      return ex.getName() + " Deve ser do tipo " + typeName;
     }
     return "O tipo de argumento não é válido";
   }
 
   @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public String  handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+  public String handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+    return ex.getMessage();
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public String handleIllegalArgumentException(IllegalArgumentException ex) {
     return ex.getMessage();
   }
 }
