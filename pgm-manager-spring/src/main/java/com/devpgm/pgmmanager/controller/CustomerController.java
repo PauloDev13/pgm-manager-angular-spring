@@ -10,12 +10,13 @@ import jakarta.validation.constraints.Positive;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-//@Validated
+@Validated
 @RestController
 @RequestMapping("api/customers")
 public class CustomerController {

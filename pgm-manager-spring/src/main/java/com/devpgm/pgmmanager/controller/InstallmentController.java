@@ -40,8 +40,8 @@ public class InstallmentController {
 
   @GetMapping("/badge_exists")
   public boolean isBadgeExists(
-      @PathParam("badge") String badge,
-      @PathParam("secretary") String secretary)
+      @PathParam("badge") @NotNull String badge,
+      @PathParam("secretary") @NotNull String secretary)
   {
       return installmentService.findByStatusBadgeSecretary(badge, secretary);
   }
@@ -57,7 +57,7 @@ public class InstallmentController {
     return installmentService.create(reqInstDTO);
   }
 
-  @PutMapping("/status/{id}")
+  @PutMapping("/installment_id/{id}/status")
   @ResponseStatus(code = HttpStatus.OK)
   public String updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
     return installmentService.updateStatusAndDuration(id);
