@@ -1,6 +1,7 @@
 package com.devpgm.pgmmanager.dto.installment;
 
 import com.devpgm.pgmmanager.dto.CustomerDTO;
+
 import java.util.Date;
 
 public record InstallmentRespDTO(

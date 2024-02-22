@@ -1,5 +1,4 @@
 package com.devpgm.pgmmanager.dto;
-
 import java.util.Date;
 
 public record InstallmentDTO(

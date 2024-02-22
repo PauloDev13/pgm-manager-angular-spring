@@ -58,7 +58,7 @@ public class Installment {
     finished = false;
   }
 
-  public InstallmentRespDTO listInstallmentDTO() {
+  public InstallmentRespDTO installmentRespDTO() {
     return new InstallmentRespDTO(
         id,
         badge,
@@ -74,5 +74,4 @@ public class Installment {
         )
     );
   }
-
 }

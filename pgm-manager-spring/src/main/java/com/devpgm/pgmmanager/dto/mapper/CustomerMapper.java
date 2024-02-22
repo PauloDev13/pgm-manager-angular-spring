@@ -12,6 +12,7 @@ import java.util.List;
 @Component
 public class CustomerMapper {
 
+  // retorna um DTO sem a lsita de Installments
   public CustomerDTO toCustomerDTO(Customer customer) {
     if (customer == null) {
       return null;
@@ -23,6 +24,8 @@ public class CustomerMapper {
         customer.getDocument()
     );
   }
+
+  // retorna um DTO com a lsita de Installments
   public CustomerRespDTO toDTO(Customer customer) {
     if (customer == null) {
       return null;
@@ -54,6 +57,7 @@ public class CustomerMapper {
         .stream()
         .map(installmentRespDTO -> {
           var installment = new Installment();
+
           installment.setId(installmentRespDTO.id());
           installment.setBadge(installmentRespDTO.badge());
           installment.setFinished(installmentRespDTO.finished());

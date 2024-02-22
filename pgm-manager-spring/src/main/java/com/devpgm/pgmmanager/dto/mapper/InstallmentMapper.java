@@ -12,7 +12,7 @@ public class InstallmentMapper {
             return null;
         }
 
-        return installment.listInstallmentDTO();
+        return installment.installmentRespDTO();
 
     }
 

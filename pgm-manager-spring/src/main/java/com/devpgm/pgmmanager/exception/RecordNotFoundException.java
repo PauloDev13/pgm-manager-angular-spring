@@ -5,4 +5,8 @@ public class RecordNotFoundException extends RuntimeException{
   public RecordNotFoundException(Long id) {
     super("Registro não encontrado com o ID: " + id);
   }
+
+  public RecordNotFoundException() {
+    super("Registro para os dados informados");
+  }
 }
