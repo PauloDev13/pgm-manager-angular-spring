@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -34,6 +35,12 @@ public class CustomerServiceImpl implements CustomerService {
     return customerRepository.findById(id)
         .map(customerMapper::toDTO)
         .orElseThrow(() -> new RecordNotFoundException(id));
+  }
+
+  @Override
+  public boolean isCPFExist(String document) {
+    Optional<Customer> instFound = customerRepository.findByDocument(document);
+    return instFound.isPresent();
   }
 
   @Transactional

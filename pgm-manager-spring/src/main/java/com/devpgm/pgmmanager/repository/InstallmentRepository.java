@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface InstallmentRepository extends JpaRepository<Installment, Long> {
    List<Installment> findBySecretaryAndFinishedIsFalse(String secretary);
    Optional<Installment> findFirstByCustomerIdAndFinishedIsFalse(Long id);
+   Optional<Installment> findByBadgeAndSecretaryAndFinishedIsFalse(String badge, String secretary);
 }

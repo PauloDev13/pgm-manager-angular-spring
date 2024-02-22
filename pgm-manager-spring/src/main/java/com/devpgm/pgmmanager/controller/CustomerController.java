@@ -7,6 +7,7 @@ import com.devpgm.pgmmanager.service.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class CustomerController {
   @GetMapping
   public List<CustomerRespDTO> customers() {
     return customerService.customers();
+  }
+
+  @GetMapping("/cpf_exists")
+  public boolean isCPFExist(@PathParam("document") @NotNull String document) {
+    return customerService.isCPFExist(document);
   }
 
   @GetMapping("/{id}")

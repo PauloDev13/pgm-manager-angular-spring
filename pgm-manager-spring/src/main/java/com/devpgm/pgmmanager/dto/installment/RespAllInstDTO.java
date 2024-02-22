@@ -4,7 +4,7 @@ import com.devpgm.pgmmanager.dto.CustomerDTO;
 
 import java.util.Date;
 
-public record InstallmentRespDTO(
+public record RespAllInstDTO(
     Long id,
     String badge,
     String secretary,

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public record InstallmentReqDTO(
+public record ReqInstDTO(
     Long id,
     @NotNull(message = "Nº do crachá é obrigatório")
     @NotBlank(message = "Nº do crachá não pode ser vazio")

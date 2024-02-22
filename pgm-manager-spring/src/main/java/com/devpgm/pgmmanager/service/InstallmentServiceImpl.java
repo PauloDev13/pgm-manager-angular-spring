@@ -1,8 +1,9 @@
 package com.devpgm.pgmmanager.service;
 
-import com.devpgm.pgmmanager.dto.InstStatusAndCustomerIdDTO;
-import com.devpgm.pgmmanager.dto.installment.InstallmentReqDTO;
-import com.devpgm.pgmmanager.dto.installment.InstallmentRespDTO;
+import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
+import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
+import com.devpgm.pgmmanager.dto.installment.ReqInstDTO;
+import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
 import com.devpgm.pgmmanager.dto.mapper.InstallmentMapper;
 import com.devpgm.pgmmanager.exception.RecordNotFoundException;
 import com.devpgm.pgmmanager.model.Installment;
@@ -12,8 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,31 +23,38 @@ public class InstallmentServiceImpl implements InstallmentService {
   private final InstallmentMapper installmentMapper;
 
   @Override
-  public List<InstallmentRespDTO> installments() {
+  public RespAllInstDTO findOneInstallment(Long id) {
+    return installmentMapper.toRespAllInstDTO(installmentRepository.findById(id)
+        .orElseThrow(() -> new RecordNotFoundException(id)));
+  }
+
+  @Override
+  public List<RespAllInstDTO> installments() {
     return installmentRepository.findAll()
         .stream()
-        .map(installmentMapper::toDTO)
+        .map(installmentMapper::toRespAllInstDTO)
         .toList();
   }
 
   @Transactional
   @Override
-  public InstallmentRespDTO create(InstallmentReqDTO installmentReqDTO) {
-    return customerRepository.findById(installmentReqDTO.customer().getId())
+  public RespCreatInstDTO create(ReqInstDTO reqInstDTO) {
+    return customerRepository.findById(reqInstDTO.customer().getId())
         .map(customer -> {
-          installmentReqDTO.customer().setName(customer.getName());
-          installmentReqDTO.customer().setDocument(customer.getDocument());
-          return installmentMapper.toDTO(installmentRepository.save(installmentMapper.toEntity(installmentReqDTO)));
+          reqInstDTO.customer().setName(customer.getName());
+          reqInstDTO.customer().setDocument(customer.getDocument());
+          return installmentMapper.toRespCreateInstDTO(
+              installmentRepository.save(installmentMapper.toEntity(reqInstDTO)));
         })
-        .orElseThrow(() -> new RecordNotFoundException(installmentReqDTO.customer().getId()));
+        .orElseThrow(() -> new RecordNotFoundException(reqInstDTO.customer().getId()));
   }
 
   @Override
-  public String updateStatus(Long id) {
-        return installmentRepository.findById(id)
+  public String updateStatusAndDuration(Long id) {
+    return installmentRepository.findById(id)
         .map(installmentFound -> {
           installmentFound.setFinished(true);
-          installmentFound.setDuration((int)calculateDuration(installmentFound.getCreatedAt()));
+          installmentFound.setDuration((int) calculateDuration(installmentFound.getCreatedAt()));
           installmentRepository.save(installmentFound);
 
           return "Status true";
@@ -56,7 +63,7 @@ public class InstallmentServiceImpl implements InstallmentService {
   }
 
   @Override
-  public List<String> badgesBySecretary(String secretary) {
+  public List<String> listBadgesBySecretary(String secretary) {
     List<Installment> list = installmentRepository.findBySecretaryAndFinishedIsFalse(secretary.toUpperCase());
 
     if (list.isEmpty()) {
@@ -68,16 +75,23 @@ public class InstallmentServiceImpl implements InstallmentService {
   }
 
   @Override
-  public InstStatusAndCustomerIdDTO instalmentByStatusCustomerId(Long id) {
-    return  installmentRepository.findFirstByCustomerIdAndFinishedIsFalse(id)
+  public RespInstStatusAndCustomerDTO instalmentByStatusCustomerId(Long id) {
+    return installmentRepository.findFirstByCustomerIdAndFinishedIsFalse(id)
         .map(respDTO ->
-          new InstStatusAndCustomerIdDTO(
-              respDTO.getBadge(),
-              respDTO.getSecretary(),
-              respDTO.isFinished(),
-              respDTO.getCustomer().getName()
-          )
+            new RespInstStatusAndCustomerDTO(
+                respDTO.getBadge(),
+                respDTO.getSecretary(),
+                respDTO.isFinished(),
+                respDTO.getCustomer().getName()
+            )
         ).orElseThrow(() -> new RecordNotFoundException(id));
+  }
+
+  @Override
+  public boolean findByStatusBadgeSecretary(String badge, String secretary) {
+    Optional<Installment> inst =
+        installmentRepository.findByBadgeAndSecretaryAndFinishedIsFalse(badge, secretary.toUpperCase());
+    return inst.isPresent();
   }
 
   private double calculateDuration(Date endDate) {

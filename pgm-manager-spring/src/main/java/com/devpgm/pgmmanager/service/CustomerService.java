@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CustomerService {
   List<CustomerRespDTO> customers();
+  boolean isCPFExist(String document);
   CustomerRespDTO findById(Long id);
   CustomerDTO create(CustomerReqDTO customerReqDTO);
   CustomerRespDTO update(Long id, CustomerReqDTO customerReqDTO);

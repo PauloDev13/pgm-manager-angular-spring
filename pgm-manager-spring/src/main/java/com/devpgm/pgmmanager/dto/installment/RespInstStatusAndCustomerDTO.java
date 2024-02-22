@@ -1,6 +1,6 @@
-package com.devpgm.pgmmanager.dto;
+package com.devpgm.pgmmanager.dto.installment;
 
-public record InstStatusAndCustomerIdDTO(
+public record RespInstStatusAndCustomerDTO(
     String badge,
     String secretary,
     boolean finished,
