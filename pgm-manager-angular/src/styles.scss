@@ -1,4 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Tema personalizado para angular  material
+// Para mais informações: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Inclui os estilos comuns para Angular Material.
+// Incluímos isso aqui para que você só precise carregar um único arquivo css para Angular Material em seu aplicativo.
+// Certifique-se de incluir esse mixin apenas uma vez!
+@include mat.core();
+
+// Defina as paletas do seu tema usando as paletas do Material Design disponíveis em paleta.scss
+// (importadas acima). Para cada paleta, você pode especificar opcionalmente um matiz padrão,
+// mais claro e mais escuro. Paletas de cores disponíveis: https://material.io/design/color/
+$angular-material-tailwind-boilerplate-primary: mat.define-palette(mat.$indigo-palette);
+$angular-material-tailwind-boilerplate-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// A paleta de aviso é opcional (o padrão é vermelho).
+$angular-material-tailwind-boilerplate-warn: mat.define-palette(mat.$red-palette);
+
+// Cria o objeto do tema. Um tema consiste em configurações para sistemas temáticos individuais,
+// como "cor" ou "tipografia".
+$angular-material-tailwind-boilerplate-theme: mat.define-light-theme((
+  color: (
+    primary: $angular-material-tailwind-boilerplate-primary,
+    accent: $angular-material-tailwind-boilerplate-accent,
+    warn: $angular-material-tailwind-boilerplate-warn,
+  )
+));
+
+// Inclui estilos de tema para o núcleo e cada componente usado em seu aplicativo. Alternativamente,
+// você pode importar e @incluir os mixins de tema para cada componente que estiver usando.
+@include mat.all-component-themes($angular-material-tailwind-boilerplate-theme);
+
+/* Você pode adicionar estilos globais a este arquivo e também importar outros arquivos de estilo */
+@import 'assets/styles/tailwind.scss';
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
