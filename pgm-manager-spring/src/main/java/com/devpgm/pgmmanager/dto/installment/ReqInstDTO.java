@@ -13,7 +13,7 @@ public record ReqInstDTO(
     String badge,
     @NotNull(message = "Secretaria é obrigatório")
     @NotBlank(message = "Secretaria não pode ser vazio")
-    @Length(min = 5, max = 100, message = "Secretaria deve ter entre 5 e 100 caracteres")
+    @Length(min = 2, max = 50, message = "Secretaria deve ter entre 2 e 50 caracteres")
     String secretary,
     @NotNull(message = "O ID do cliente é obrigatório")
     Customer customer

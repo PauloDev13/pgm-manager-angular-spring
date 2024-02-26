@@ -17,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin("*")
 @RestController
 @RequestMapping("api/customers")
 public class CustomerController {

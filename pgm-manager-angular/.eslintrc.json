@@ -8,7 +8,9 @@
       "files": [
         "*.ts"
       ],
-      "plugins": ["eslint-plugin-import-helpers"],
+      "plugins": [
+        "eslint-plugin-import-helpers"
+      ],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -22,9 +24,17 @@
           {
             "newlinesBetween": "always",
             "groups": [
-              ["module"],
-              ["/^~//"],
-              ["parent", "sibling", "index"]
+              [
+                "module"
+              ],
+              [
+                "/^~//"
+              ],
+              [
+                "parent",
+                "sibling",
+                "index"
+              ]
             ],
             "alphabetize": {
               "order": "asc",
@@ -59,6 +69,14 @@
         "plugin:@angular-eslint/template/accessibility"
       ],
       "rules": {}
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@ngrx/recommended"
+      ]
     }
   ]
 }

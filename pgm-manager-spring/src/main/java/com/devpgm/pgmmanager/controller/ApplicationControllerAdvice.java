@@ -2,6 +2,7 @@ package com.devpgm.pgmmanager.controller;
 
 import com.devpgm.pgmmanager.exception.RecordNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -61,5 +62,11 @@ public class ApplicationControllerAdvice {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public String handleIllegalArgumentException(IllegalArgumentException ex) {
     return ex.getMessage();
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public String handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+    return "Duplicate constraint";
   }
 }

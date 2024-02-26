@@ -1,5 +1,6 @@
 package com.devpgm.pgmmanager.dto.customer;
 
+import com.devpgm.pgmmanager.model.Installment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
@@ -14,6 +15,7 @@ public record CustomerReqDTO(
     @NotNull(message = "CPF é obrigatório")
     @NotBlank(message = "CPF não pode ser vazio")
     @Length(min = 11, max = 11, message = "CPF deve ter 11 caracteres somente números")
-    String document
+    String document,
+    Installment installment
 ) {
 }

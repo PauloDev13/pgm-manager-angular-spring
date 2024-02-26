@@ -1,6 +1,11 @@
 <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8
             dark:bg-gray-800 dark:border-gray-700 my-20 mx-auto">
-  <form (submit)="onSubmit()" [formGroup]="formCustomer" class="space-y-6">
+  @if(customerStore.customer()) {
+  {{ customerStore.customer()?.name}}
+  } @else {
+    {{ customerStore.err() }}
+  }
+    <form (submit)="onSubmit()" [formGroup]="formCustomer" class="space-y-6">
     <h5 class="text-xl font-medium text-gray-900 dark:text-white">Cadastro de Cliente</h5>
     <div formGroupName="customer">
       <div class="relative z-0 w-full mb-5 group">
@@ -22,9 +27,13 @@
           for="name">
           Nome
         </label>
+        @if (formCustomer.controls.customer.get('name')?.invalid && formCustomer.touched) {
           <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-            <span class="font-medium">* </span>Nome é obrigatório
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'customer', 'name') }}
+            </span>
           </p>
+        }
       </div>
 
       <div class="relative z-0 w-full mb-5 group">
@@ -44,9 +53,20 @@
           for="document">
           CPF
         </label>
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-          <span class="font-medium">* </span>CPF é obrigatório
-        </p>
+        @if (formCustomer.controls.customer.get('document')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'customer', 'document') }}
+            </span>
+          </p>
+        }
+        @if (customerStore.err()) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ customerStore.err() }}
+            </span>
+          </p>
+        }
       </div>
     </div>
 
@@ -67,7 +87,15 @@
             </option>
           }
         </select>
+        @if (formCustomer.controls.installment.get('secretary')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'installment', 'secretary') }}
+            </span>
+          </p>
+        }
       </div>
+
 
       <div class="relative z-0 w-auto mb-5 group">
         <label class="sr-only" for="badge">Selecione</label>
@@ -82,6 +110,13 @@
             <option value="{{ badge }}">{{ badge }}</option>
           }
         </select>
+        @if (formCustomer.controls.installment.get('badge')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'installment', 'badge') }}
+            </span>
+          </p>
+        }
       </div>
     </div>
 

@@ -46,8 +46,19 @@ public class CustomerServiceImpl implements CustomerService {
   @Transactional
   @Override
   public CustomerDTO create(CustomerReqDTO customerReqDTO) {
-    return customerMapper.toCustomerDTO(
-        customerRepository.save(customerMapper.toEntity(customerReqDTO)));
+    if (customerReqDTO.installment() != null) {
+      var newCustomer = new Customer();
+
+      newCustomer.setName(customerReqDTO.name());
+      newCustomer.setDocument(customerReqDTO.document());
+      newCustomer.add(customerReqDTO.installment());
+
+      return customerMapper.toCustomerDTO(customerRepository.save(newCustomer));
+
+    } else {
+      return customerMapper.toCustomerDTO(
+          customerRepository.save(customerMapper.toEntity(customerReqDTO)));
+    }
   }
 
   @Transactional
