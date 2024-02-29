@@ -1,9 +1,9 @@
 package com.devpgm.pgmmanager.controller;
 
-import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
 import com.devpgm.pgmmanager.dto.installment.ReqInstDTO;
 import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
+import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
+import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
 import com.devpgm.pgmmanager.service.InstallmentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +20,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("api/installments")
+@CrossOrigin("*")
 public class InstallmentController {
   private final InstallmentService installmentService;
 

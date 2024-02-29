@@ -22,7 +22,7 @@ const initialCustomerStoreState: ICustomerStoreState = {
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
 
-  withState(initialCustomerStoreState),
+  withState<ICustomerStoreState>(initialCustomerStoreState),
 
   withMethods(
     (

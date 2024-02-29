@@ -1,11 +1,11 @@
 import { JsonPipe } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { getState } from '@ngrx/signals';
+import { Router } from '@angular/router';
 
 import { FormUtilsService } from '../shared/form/form-utils.service';
 import { badges, secretaries } from './data/secretaries';
@@ -36,23 +36,21 @@ export default class CustomerComponent {
       badge: ['', [Validators.required]],
     }),
   });
-
-  constructor() {
-    effect(() => {
-      const { customer } = getState(this.customerStore);
-      if (customer) {
-        alert(`${customer.name} cadastrado(a) com sucesso`);
-        this.formCustomer.reset();
-      }
-    });
-  }
+  private readonly route = inject(Router);
 
   onSubmit() {
     if (this.formCustomer.valid) {
       const { customer } = this.formCustomer.getRawValue();
       const { installment } = this.formCustomer.getRawValue();
+
       this.customerStore.create({ ...customer, installment });
+      this.route
+        .navigate(['/installment'])
+        .then(() => alert(`${customer.name} cadastrado(a) com sucesso`));
+
+      this.formCustomer.reset();
     }
+
     this.formCustomer.markAllAsTouched();
   }
 }

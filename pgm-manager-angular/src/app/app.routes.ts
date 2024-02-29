@@ -18,4 +18,11 @@ export const routes: Routes = [
     path: 'customer',
     loadComponent: () => import('./customer/customer.component'),
   },
+  {
+    path: 'installment',
+    loadComponent: () =>
+      import(
+        './installment/components/installment-list/installment-list.component'
+      ),
+  },
 ];

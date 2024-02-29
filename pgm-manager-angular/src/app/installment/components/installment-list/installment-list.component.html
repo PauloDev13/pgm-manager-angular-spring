@@ -1,0 +1,275 @@
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mx-5">
+  <table
+    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr>
+      <th class="px-6 py-3" scope="col">
+        Cliente
+      </th>
+      <th class="px-6 py-3" scope="col">
+        CPF
+      </th>
+      <th class="px-6 py-3" scope="col">
+        Secretaria/Destino
+      </th>
+      <th class="px-6 py-3 text-center" scope="col">
+        Crachá
+      </th>
+      <th class="px-6 py-3" scope="col">
+        Entrada
+      </th>
+      <th class="px-6 py-3" scope="col">
+        Saída
+      </th>
+      <th class="px-6 py-3" scope="col">
+        Tempo atendimento
+      </th>
+      <th class="px-6 py-3" scope="col">
+        Finalizar
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (installment of store.listInstallments(); track installment.id) {
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <th class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">
+            {{ installment.customer.name }}
+          </th>
+          <td class="px-4 py-1.5">
+            {{ installment.customer.document }}
+          </td>
+          <td class="px-4 py-1.5">
+            {{ installment.secretary.toUpperCase() }}
+          </td>
+          <td class="px-4 py-1.5 text-center">
+            {{ installment.badge }}
+          </td>
+          <td class="px-4 py-1.5">
+            {{ installment.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+          </td>
+          <td class="px-4 py-1.5">
+            @if (installment.finished) {
+              {{ installment.updatedAt | date: 'dd/MM/yyyy HH:mm' }}
+            }
+          </td>
+          <td class="px-4 py-1.5">
+            @if (installment.finished) {
+              {{ installment.duration }} min.
+            }
+          </td>
+          <td class="px-4 py-1.5 text-center">
+            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ok</a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<div class="flex end-0 mt-5">
+  <nav aria-label="Pagination">
+    <ul class="flex items-center -space-x-px h-8 text-sm">
+      <li>
+        <a
+          class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500
+                 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700
+                 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          href="#">
+          <span class="sr-only">Previous</span>
+          <svg
+            aria-hidden="true"
+            class="w-2.5 h-2.5 rtl:rotate-180"
+            fill="none" viewBox="0 0 6 10"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 1 1 5l4 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a
+          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white
+                 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800
+                 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          href="#">1</a>
+      </li>
+      <li>
+        <a
+          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white
+                 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800
+                 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          href="#">2</a>
+      </li>
+      <li>
+        <a
+          aria-current="page"
+          class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border
+                 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700
+                 dark:bg-gray-700 dark:text-white"
+          href="#">3</a>
+      </li>
+      <li>
+        <a
+          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white
+                 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800
+                 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          href="#">4</a>
+      </li>
+      <li>
+        <a
+          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white
+                 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800
+                 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          href="#">5</a>
+      </li>
+      <li>
+        <a
+          class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white
+                 border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800
+                 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          href="#">
+          <span class="sr-only">Next</span>
+          <svg
+            aria-hidden="true"
+            class="w-2.5 h-2.5 rtl:rotate-180"
+            fill="none" viewBox="0 0 6 10"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="m1 9 4-4-4-4"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!--  <table-->
+<!--    [dataSource]="store.listInstallments()"-->
+<!--    aria-label="table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"-->
+<!--    mat-table-->
+<!--  >-->
+<!--    &lt;!&ndash;nome do cliente&ndash;&gt;-->
+<!--    <ng-container matColumnDef="name">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Cliente-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element"-->
+<!--        mat-cell>-->
+<!--        {{ element.customer.name }}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--    &lt;!&ndash;cpf do cliente&ndash;&gt;-->
+<!--    <ng-container matColumnDef="document">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        CPF-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element"-->
+<!--        mat-cell>-->
+<!--        {{ element.customer.document }}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--    &lt;!&ndash;secretaria&ndash;&gt;-->
+<!--    <ng-container matColumnDef="secretary">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Secretaria/Destino-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element"-->
+<!--        mat-cell>-->
+<!--        {{ element.secretary }}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--    &lt;!&ndash;crachá&ndash;&gt;-->
+<!--    <ng-container matColumnDef="badge">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Nº Crachá-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element"-->
+<!--        mat-cell>-->
+<!--        {{ element.badge }}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--    &lt;!&ndash;data/hora entrada&ndash;&gt;-->
+<!--    <ng-container matColumnDef="createdAt">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Entrada-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element"-->
+<!--        class="px-4 py-1.5"-->
+<!--        mat-cell>-->
+<!--        {{ element.createdAt | date: 'dd/MM/yyyy HH:mm'}}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--    &lt;!&ndash;data/hora saída&ndash;&gt;-->
+<!--    <ng-container matColumnDef="updatedAt">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Saída-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element"-->
+<!--        mat-cell>-->
+<!--        {{ element.updatedAt | date: 'dd/MM/yyyy HH:mm'}}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--    &lt;!&ndash;tempo atendimento&ndash;&gt;-->
+<!--    <ng-container matColumnDef="duration">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Tempo atendimento-->
+<!--      </th>-->
+<!--      <td-->
+<!--        *matCellDef="let element" class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white"-->
+<!--        mat-cell-->
+<!--       >-->
+<!--        {{ element.duration}}-->
+<!--      </td>-->
+<!--    </ng-container>-->
+
+<!--    <ng-container matColumnDef="options">-->
+<!--      <th-->
+<!--        *matHeaderCellDef-->
+<!--        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"-->
+<!--        mat-header-cell>-->
+<!--        Opções-->
+<!--      </th>-->
+<!--      <td *matCellDef="let installment" mat-cell>-->
+<!--        <button>Finalizar</button>-->
+<!--      </td>-->
+<!--    </ng-container>-->
+
+<!--    <tr  *matHeaderRowDef="displayedColumns" mat-header-row></tr>-->
+<!--    <tr  *matRowDef="let row; columns: displayedColumns" mat-row></tr>-->
+<!--  </table>-->
+
+<!--<mat-paginator [pageSizeOptions]="[5, 10, 20]"-->
+<!--               aria-label="Select page of periodic elements"-->
+<!--               showFirstLastButtons>-->
+<!--</mat-paginator>-->
+
