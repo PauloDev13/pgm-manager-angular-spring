@@ -1,9 +1,6 @@
 package com.devpgm.pgmmanager.service;
 
-import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
-import com.devpgm.pgmmanager.dto.installment.ReqInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
+import com.devpgm.pgmmanager.dto.installment.*;
 import com.devpgm.pgmmanager.dto.mapper.InstallmentMapper;
 import com.devpgm.pgmmanager.exception.RecordNotFoundException;
 import com.devpgm.pgmmanager.model.Installment;
@@ -11,6 +8,8 @@ import com.devpgm.pgmmanager.repository.CustomerRepository;
 import com.devpgm.pgmmanager.repository.InstallmentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -36,7 +35,19 @@ public class InstallmentServiceImpl implements InstallmentService {
         .toList();
   }
 
-  @Transactional
+    @Override
+    public InstallmentPageDTO installmentsPagination(int page, int size) {
+        Page<Installment> pageInstallments =
+                installmentRepository.findAll(PageRequest.of(page, size));
+        List<RespAllInstDTO> installments =
+                pageInstallments.get().map(installmentMapper::toRespAllInstDTO).toList();
+        return new InstallmentPageDTO(
+                installments,
+                pageInstallments.getTotalElements(),
+                pageInstallments.getTotalPages());
+    }
+
+    @Transactional
   @Override
   public RespCreatInstDTO create(ReqInstDTO reqInstDTO) {
     return customerRepository.findById(reqInstDTO.customer().getId())

@@ -1,13 +1,12 @@
 package com.devpgm.pgmmanager.controller;
 
-import com.devpgm.pgmmanager.dto.installment.ReqInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
+import com.devpgm.pgmmanager.dto.installment.*;
 import com.devpgm.pgmmanager.service.InstallmentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,14 @@ public class InstallmentController {
   @GetMapping
   public List<RespAllInstDTO> installments() {
     return installmentService.installments();
+  }
+
+  @GetMapping("/pagination")
+  public InstallmentPageDTO installmentsPagination(
+          @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+          @RequestParam(defaultValue = "10") @Positive @Max(100) int size)
+  {
+    return installmentService.installmentsPagination(page, size);
   }
 
   @GetMapping("/{id}")

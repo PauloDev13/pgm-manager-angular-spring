@@ -1,14 +1,12 @@
 package com.devpgm.pgmmanager.service;
 
-import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
-import com.devpgm.pgmmanager.dto.installment.ReqInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
+import com.devpgm.pgmmanager.dto.installment.*;
 
 import java.util.List;
 
 public interface InstallmentService {
   List<RespAllInstDTO> installments();
+  InstallmentPageDTO  installmentsPagination(int page, int size);
   RespAllInstDTO findOneInstallment(Long id);
   RespCreatInstDTO create(ReqInstDTO reqInstDTO);
   String updateStatusAndDuration(Long id);
