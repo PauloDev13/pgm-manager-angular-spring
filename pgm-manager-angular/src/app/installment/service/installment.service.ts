@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import {first} from 'rxjs';
 
 import { RespCreateInstallmentDTO } from '../dto/resp-create-installmentDTO';
+import {RespInstallmentPageDTO} from "../dto/resp-installment-pageDTO";
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,12 @@ export class InstallmentService {
 
   loadAll() {
     return this.http
-      .get<RespCreateInstallmentDTO[]>(this.baseUrlApi)
-      .pipe(tap(resp => console.log(resp)));
+      .get<RespCreateInstallmentDTO[]>(this.baseUrlApi);
+  }
+
+  loadAllPagination(page: number = 0, size: number = 10){
+    return this.http.get<RespInstallmentPageDTO>(`${this.baseUrlApi}/pagination`, {
+      params: { page, size }
+    }).pipe(first());
   }
 }
