@@ -1,16 +1,13 @@
-import {DatePipe} from '@angular/common';
-import {Component, effect, inject} from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import {installmentStore} from '../../store/installment.store';
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import { installmentStore } from '../../store/installment.store';
 
 @Component({
   selector: 'app-installment-list',
   standalone: true,
-  imports: [
-    DatePipe,
-    MatPaginator,
-  ],
+  imports: [DatePipe, MatPaginator],
   templateUrl: './installment-list.component.html',
   styleUrl: './installment-list.component.scss',
 })
@@ -22,11 +19,10 @@ export default class InstallmentListComponent {
 
   constructor() {
     effect(() => {
-      this.store.loadAllPagination(
-        {
-          page: this.pageIndex, size: this.pageSize
-        }
-      )
+      this.store.loadAllPagination({
+        page: this.pageIndex,
+        size: this.pageSize,
+      });
     });
   }
 
@@ -38,7 +34,8 @@ export default class InstallmentListComponent {
     },
   ) {
     this.store.loadAllPagination({
-      page: pageEvent.pageIndex, size: pageEvent.pageSize
+      page: pageEvent.pageIndex,
+      size: pageEvent.pageSize,
     });
     this.totalElements = this.store.totalElements();
   }

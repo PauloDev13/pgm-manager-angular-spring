@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { InstallmentService } from '../service/installment.service';
 type IInstallmentState = {
   installment: ReqCreateInstallmentDTO | null;
   listInstallments: InstallmentListModel[];
-  totalElements: number,
+  totalElements: number;
 
   err: string | null;
 };
@@ -54,16 +54,16 @@ export const installmentStore = signalStore(
           ),
         ),
       ),
-      loadAllPagination: rxMethod<{ page: number, size: number, }>(
+      loadAllPagination: rxMethod<{ page: number; size: number }>(
         pipe(
           takeUntilDestroyed(destroyRef),
-          switchMap(({ page, size}) =>
+          switchMap(({ page, size }) =>
             installmentService.loadAllPagination(page, size).pipe(
               tapResponse({
                 next: resp => {
                   patchState(store, {
                     listInstallments: resp.installments,
-                    totalElements: resp.totalElements
+                    totalElements: resp.totalElements,
                   });
                 },
                 error: (err: HttpErrorResponse) =>
@@ -73,7 +73,8 @@ export const installmentStore = signalStore(
               }),
             ),
           ),
-        ))
+        ),
+      ),
     }),
   ),
 );

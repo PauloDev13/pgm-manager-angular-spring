@@ -44,11 +44,14 @@ export default class CustomerComponent {
       const { installment } = this.formCustomer.getRawValue();
 
       this.customerStore.create({ ...customer, installment });
-      this.route
-        .navigate(['/installment'])
-        .then(() => alert(`${customer.name} cadastrado(a) com sucesso`));
 
-      this.formCustomer.reset();
+      if (this.customerStore.err()) {
+        this.route
+          .navigate(['/installment'])
+          .then(() => alert(`${customer.name} cadastrado(a) com sucesso`));
+
+        this.formCustomer.reset();
+      }
     }
 
     this.formCustomer.markAllAsTouched();

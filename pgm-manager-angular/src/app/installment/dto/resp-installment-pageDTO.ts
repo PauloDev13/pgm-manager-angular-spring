@@ -1,8 +1,7 @@
-import {InstallmentListModel} from "../model/installment-list.model";
+import { InstallmentListModel } from '../model/installment-list.model';
 
 export interface RespInstallmentPageDTO {
-  installments: InstallmentListModel[],
-  totalElements: number,
-  totalPages: number,
-
+  installments: InstallmentListModel[];
+  totalElements: number;
+  totalPages: number;
 }
