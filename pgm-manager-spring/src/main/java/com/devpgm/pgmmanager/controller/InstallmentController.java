@@ -64,11 +64,10 @@ public class InstallmentController {
   public RespCreatInstDTO create(@RequestBody @NotNull @Valid ReqInstDTO reqInstDTO) {
     return installmentService.create(reqInstDTO);
   }
-
-  @PutMapping("/installment_id/{id}/status")
-  @ResponseStatus(code = HttpStatus.OK)
-  public String updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
-    return installmentService.updateStatusAndDuration(id);
+  @PutMapping("/{id}/status")
+  @ResponseStatus(code = HttpStatus.NO_CONTENT)
+  public void updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
+    installmentService.updateStatusAndDuration(id);
   }
 
 }

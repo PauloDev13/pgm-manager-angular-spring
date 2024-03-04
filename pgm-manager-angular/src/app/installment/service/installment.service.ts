@@ -23,4 +23,8 @@ export class InstallmentService {
       })
       .pipe(first());
   }
+
+  updateStatus(id: number) {
+    return this.http.put<void>(`${this.baseUrlApi}/${id}/status`, {});
+  }
 }

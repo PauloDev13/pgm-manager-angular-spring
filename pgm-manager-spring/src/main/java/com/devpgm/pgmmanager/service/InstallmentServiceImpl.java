@@ -61,14 +61,12 @@ public class InstallmentServiceImpl implements InstallmentService {
   }
 
   @Override
-  public String updateStatusAndDuration(Long id) {
-    return installmentRepository.findById(id)
+  public void updateStatusAndDuration(Long id) {
+    installmentRepository.findById(id)
         .map(installmentFound -> {
           installmentFound.setFinished(true);
           installmentFound.setDuration((int) calculateDuration(installmentFound.getCreatedAt()));
-          installmentRepository.save(installmentFound);
-
-          return "Status true";
+          return installmentRepository.save(installmentFound);
         })
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
