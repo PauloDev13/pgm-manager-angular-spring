@@ -8,14 +8,19 @@ import { pipe, switchMap } from 'rxjs';
 
 import { ReqCreateCustomerDTO } from '../dto/req-create-customerDTO';
 import { CustomerService } from '../service/customer.service';
+import {CustomerListModel} from "../model/customer-list.model";
 
 type ICustomerStoreState = {
   customer: ReqCreateCustomerDTO | null;
+  listCustomers: CustomerListModel[];
+  totalElements: number;
   err: string | null;
 };
 
 const initialCustomerStoreState: ICustomerStoreState = {
   customer: null,
+  listCustomers: [],
+  totalElements: 0,
   err: null,
 };
 
@@ -55,6 +60,25 @@ export const CustomerStore = signalStore(
             }),
           ),
         ),
+        loadAllPagination: rxMethod<{ page: number, size: number}>(
+          pipe(
+            switchMap(({ page, size}) => customerService.loadPagination( page, size)
+              .pipe(
+                tapResponse({
+                  next: (resp) => {
+                    patchState(store, {
+                      listCustomers: resp.customers,
+                      totalElements: resp.totalElements,
+                    })
+                  },
+                  error: (errorResp: HttpErrorResponse) => patchState(store, {
+                    err: `Erro ao buscar dados. CODE: ${errorResp.status}`
+                  })
+                })
+              )
+            )
+          )
+        )
       };
     },
   ),

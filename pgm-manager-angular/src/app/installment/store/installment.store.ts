@@ -14,7 +14,6 @@ type IInstallmentState = {
   installment: ReqCreateInstallmentDTO | null;
   listInstallments: InstallmentListModel[];
   totalElements: number;
-
   err: string | null;
 };
 

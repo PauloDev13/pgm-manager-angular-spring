@@ -1,6 +1,7 @@
 package com.devpgm.pgmmanager.service;
 
 import com.devpgm.pgmmanager.dto.CustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.CustomerPageDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 public interface CustomerService {
   List<CustomerRespDTO> customers();
+  CustomerPageDTO customersPagination(int page, int size);
   boolean isCPFExist(String document);
   CustomerRespDTO findById(Long id);
   CustomerDTO create(CustomerReqDTO customerReqDTO);

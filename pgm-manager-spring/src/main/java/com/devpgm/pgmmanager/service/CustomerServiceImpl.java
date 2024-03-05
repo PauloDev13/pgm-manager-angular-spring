@@ -1,6 +1,7 @@
 package com.devpgm.pgmmanager.service;
 
 import com.devpgm.pgmmanager.dto.CustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.CustomerPageDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
 import com.devpgm.pgmmanager.dto.mapper.CustomerMapper;
@@ -9,6 +10,8 @@ import com.devpgm.pgmmanager.model.Customer;
 import com.devpgm.pgmmanager.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -28,6 +31,16 @@ public class CustomerServiceImpl implements CustomerService {
         .stream()
         .map(customerMapper::toDTO)
         .toList();
+  }
+
+  @Override
+  public CustomerPageDTO customersPagination(int page, int size) {
+    Page<Customer> pageCustomers = customerRepository.findAll(PageRequest.of(page, size));
+    List<CustomerRespDTO> customers = pageCustomers.get().map(customerMapper::toDTO).toList();
+    return new CustomerPageDTO(
+            customers,
+            pageCustomers.getTotalElements(),
+            pageCustomers.getTotalPages());
   }
 
   @Override

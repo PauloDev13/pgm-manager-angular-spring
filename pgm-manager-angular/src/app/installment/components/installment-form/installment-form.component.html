@@ -1,0 +1,127 @@
+<div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8
+            dark:bg-gray-800 dark:border-gray-700 my-20 mx-auto">
+  <form (submit)="onSubmit()" [formGroup]="formInstallment" class="space-y-6">
+    <h5 class="text-xl font-medium text-gray-900 dark:text-white">Cadastro de Cliente</h5>
+    <div formGroupName="customer">
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+            border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
+            dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          formControlName="name"
+          id="name"
+          name="name"
+          placeholder=" "
+          type="text"/>
+        <label
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-200 duration-300
+            transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+            rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600
+            peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+            peer-focus:scale-75 peer-focus:-translate-y-6"
+          for="name">
+          Nome
+        </label>
+        @if (formCustomer.controls.customer.get('name')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'customer', 'name') }}
+            </span>
+          </p>
+        }
+      </div>
+
+      <div class="relative z-0 w-full mb-5 group">
+        <input
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2
+              border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+              focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          formControlName="document"
+          id="document"
+          placeholder=" "
+          type="text"/>
+        <label
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-200 duration-300
+              transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4
+              peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100
+              peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          for="document">
+          CPF
+        </label>
+        @if (formCustomer.controls.customer.get('document')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'customer', 'document') }}
+            </span>
+          </p>
+        }
+        @if (customerStore.err()) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ customerStore.err() }}
+            </span>
+          </p>
+        }
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 md:gap-20" formGroupName="installment">
+      <div class="relative z-0 w-auto mb-5 group">
+        <label class="sr-only" for="secretary">Selecione</label>
+        <select
+          class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent dark:bg-gray-800
+                border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-200 dark:border-gray-700
+                focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+          formControlName="secretary"
+          id="secretary">
+          <option selected value="">Secretaria/Destino</option>
+          @for (secretary of listSecretaries; track $index) {
+            <option
+              value="{{ secretary.description }}">
+              {{ secretary.name }}
+            </option>
+          }
+        </select>
+        @if (formCustomer.controls.installment.get('secretary')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'installment', 'secretary') }}
+            </span>
+          </p>
+        }
+      </div>
+
+
+      <div class="relative z-0 w-auto mb-5 group">
+        <label class="sr-only" for="badge">Selecione</label>
+        <select
+          class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent dark:bg-gray-800
+                border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-200 dark:border-gray-700
+                focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+          formControlName="badge"
+          id="badge">
+          <option selected value="">Nº crachá</option>
+          @for (badge of listBadges; track $index) {
+            <option value="{{ badge }}">{{ badge }}</option>
+          }
+        </select>
+        @if (formCustomer.controls.installment.get('badge')?.invalid && formCustomer.touched) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * {{ formUtilService.getErrorMessage(formCustomer, 'installment', 'badge') }}
+            </span>
+          </p>
+        }
+      </div>
+    </div>
+
+    <button
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300
+            font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600
+            dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      type="submit">
+      Submit
+    </button>
+  </form>
+</div>
+

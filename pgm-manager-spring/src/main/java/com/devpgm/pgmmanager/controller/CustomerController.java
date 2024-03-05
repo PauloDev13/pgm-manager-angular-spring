@@ -1,12 +1,15 @@
 package com.devpgm.pgmmanager.controller;
 
 import com.devpgm.pgmmanager.dto.CustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.CustomerPageDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
 import com.devpgm.pgmmanager.service.CustomerService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,13 @@ public class CustomerController {
   @GetMapping
   public List<CustomerRespDTO> customers() {
     return customerService.customers();
+  }
+  @GetMapping("/pagination")
+  public CustomerPageDTO customersPagination(
+          @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+          @RequestParam(defaultValue = "10") @Positive @Max(100) int size
+  ) {
+    return customerService.customersPagination(page, size);
   }
 
   @GetMapping("/cpf_exists")
