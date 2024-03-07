@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { installmentStore } from '../../store/installment.store';
+import { InstallmentStore } from '../../store/installment.store';
 
 @Component({
   selector: 'app-installment-list',
@@ -12,19 +12,20 @@ import { installmentStore } from '../../store/installment.store';
   styleUrl: './installment-list.component.scss',
 })
 export default class InstallmentListComponent {
-  protected readonly store = inject(installmentStore);
-  protected totalElements: number = this.store.totalElements();
+  protected store = inject(InstallmentStore);
+  protected totalElements = this.store.totalElements();
+  protected listInstallments = this.store.listInstallments;
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
 
-  constructor() {
-    effect(() => {
-      this.store.loadAllPagination({
-        page: this.pageIndex,
-        size: this.pageSize,
-      });
-    });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     this.store.loadAllPagination({
+  //       page: this.pageIndex,
+  //       size: this.pageSize,
+  //     });
+  //   });
+  // }
 
   refresh(
     pageEvent: PageEvent = {

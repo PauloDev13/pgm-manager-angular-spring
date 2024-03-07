@@ -9,7 +9,7 @@ public interface InstallmentService {
   InstallmentPageDTO  installmentsPagination(int page, int size);
   RespAllInstDTO findOneInstallment(Long id);
   RespCreatInstDTO create(ReqInstDTO reqInstDTO);
-  void updateStatusAndDuration(Long id);
+  RespAllInstDTO updateStatusAndDuration(Long id);
   List<String> listBadgesBySecretary(String secretary);
   RespInstStatusAndCustomerDTO instalmentByStatusCustomerId(Long id);
   boolean findByStatusBadgeSecretary(String badge, String secretary);

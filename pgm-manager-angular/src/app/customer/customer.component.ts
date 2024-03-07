@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { InstallmentStore } from '../installment/store/installment.store';
 import { FormUtilsService } from '../shared/form/form-utils.service';
 import { badges, secretaries } from './data/secretaries';
 import { CustomerStore } from './store/custumer.store';
@@ -24,8 +25,10 @@ export default class CustomerComponent {
   // injectables
   protected readonly formUtilService = inject(FormUtilsService);
   protected readonly customerStore = inject(CustomerStore);
-  private readonly fb = inject(NonNullableFormBuilder);
+  protected readonly installmentStore = inject(InstallmentStore);
+  protected err = this.customerStore.err;
   // form customer
+  private readonly fb = inject(NonNullableFormBuilder);
   protected formCustomer = this.fb.group({
     customer: this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
@@ -45,9 +48,9 @@ export default class CustomerComponent {
 
       this.customerStore.create({ ...customer, installment });
 
-      if (this.customerStore.err()) {
+      if (this.err() === null) {
         this.route
-          .navigate(['/installment'])
+          .navigate(['/installments'])
           .then(() => alert(`${customer.name} cadastrado(a) com sucesso`));
 
         this.formCustomer.reset();

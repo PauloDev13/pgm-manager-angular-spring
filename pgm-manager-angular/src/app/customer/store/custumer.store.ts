@@ -1,14 +1,20 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
+import { InstallmentStore } from '../../installment/store/installment.store';
 import { ReqCreateCustomerDTO } from '../dto/req-create-customerDTO';
+import { CustomerListModel } from '../model/customer-list.model';
 import { CustomerService } from '../service/customer.service';
-import {CustomerListModel} from "../model/customer-list.model";
 
 type ICustomerStoreState = {
   customer: ReqCreateCustomerDTO | null;
@@ -33,17 +39,25 @@ export const CustomerStore = signalStore(
     (
       store,
       customerService = inject(CustomerService),
-      destroyRef = inject(DestroyRef),
+      installmentStore = inject(InstallmentStore),
     ) => {
       return {
         create: rxMethod<ReqCreateCustomerDTO>(
           pipe(
-            takeUntilDestroyed(destroyRef),
             switchMap((request: ReqCreateCustomerDTO) => {
               return customerService.createCustomer(request).pipe(
                 tapResponse({
                   next: customer => {
-                    patchState(store, { customer, err: null });
+                    const updatedCustomer = [
+                      ...store.listCustomers(),
+                      customer,
+                    ];
+                    patchState(store, {
+                      listCustomers: updatedCustomer,
+                      err: null,
+                    });
+                    // atualiza lista de installments
+                    installmentStore.loadAllPagination({ page: 0, size: 10 });
                   },
                   error: (err: HttpErrorResponse) => {
                     if (err.error === 'Duplicate constraint') {
@@ -60,26 +74,32 @@ export const CustomerStore = signalStore(
             }),
           ),
         ),
-        loadAllPagination: rxMethod<{ page: number, size: number}>(
+        loadAllPagination: rxMethod<{ page: number; size: number }>(
           pipe(
-            switchMap(({ page, size}) => customerService.loadPagination( page, size)
-              .pipe(
+            switchMap(({ page, size }) =>
+              customerService.loadPagination(page, size).pipe(
                 tapResponse({
-                  next: (resp) => {
+                  next: resp => {
                     patchState(store, {
                       listCustomers: resp.customers,
                       totalElements: resp.totalElements,
-                    })
+                    });
                   },
-                  error: (errorResp: HttpErrorResponse) => patchState(store, {
-                    err: `Erro ao buscar dados. CODE: ${errorResp.status}`
-                  })
-                })
-              )
-            )
-          )
-        )
+                  error: (errorResp: HttpErrorResponse) =>
+                    patchState(store, {
+                      err: `Erro ao buscar dados. CODE: ${errorResp.status}`,
+                    }),
+                }),
+              ),
+            ),
+          ),
+        ),
       };
     },
   ),
+  withHooks({
+    onInit({ loadAllPagination }) {
+      loadAllPagination({ page: 0, size: 10 });
+    },
+  }),
 );

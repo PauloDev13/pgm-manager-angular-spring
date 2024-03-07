@@ -1,48 +1,48 @@
-import {Component, effect, inject} from '@angular/core';
-import {DatePipe} from "@angular/common";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {CustomerStore} from "../../store/custumer.store";
+import { DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
+
+import { InstallmentStore } from '../../../installment/store/installment.store';
+import { CustomerStore } from '../../store/custumer.store';
 
 @Component({
   selector: 'app-customer-list',
   standalone: true,
-  imports: [
-    DatePipe,
-    MatPaginator
-  ],
+  imports: [DatePipe, MatPaginator],
   templateUrl: './customer-list.component.html',
-  styleUrl: './customer-list.component.scss'
+  styleUrl: './customer-list.component.scss',
 })
 export class CustomerListComponent {
-  protected readonly store = inject(CustomerStore);
-  protected totalElements: number = this.store.totalElements();
+  protected readonly customerStore = inject(CustomerStore);
+  protected readonly installmentStore = inject(InstallmentStore);
+  //
+  protected listCustomers = this.customerStore.listCustomers;
+  protected customerInfo = this.installmentStore.customerInfo;
+  protected error = this.installmentStore.err;
+  protected totalElements = this.customerStore.totalElements;
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
-
-  constructor() {
-    effect(() => {
-      this.store.loadAllPagination({
-        page: this.pageIndex,
-        size: this.pageSize,
-      });
-    });
-  }
+  private router = inject(Router);
 
   refresh(
     pageEvent: PageEvent = {
-      length: this.totalElements,
+      length: this.totalElements(),
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
     },
   ) {
-    this.store.loadAllPagination({
+    this.customerStore.loadAllPagination({
       page: pageEvent.pageIndex,
       size: pageEvent.pageSize,
     });
-    this.totalElements = this.store.totalElements();
   }
 
-  teste(event: any) {
-    console.log('PASSOU ', event)
+  onAddInstallment(id: number) {
+    console.log('ID', id);
+    this.installmentStore.installmentByCustomerId({ id });
+    console.log('ERROR NO METHOD', this.error());
+    console.log('CUSTOMER NO METHOD', this.customerInfo());
+    this.router.navigate(['/installment']).then();
   }
 }

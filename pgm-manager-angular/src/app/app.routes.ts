@@ -19,17 +19,24 @@ export const routes: Routes = [
     loadComponent: () => import('./customer/customer.component'),
   },
   {
+    path: 'customers',
+    loadComponent: () =>
+      import(
+        './customer/components/customer-list/customer-list.component'
+      ).then(c => c.CustomerListComponent),
+  },
+  {
+    path: 'installment',
+    loadComponent: () =>
+      import(
+        './installment/components/installment-form/installment-form.component'
+      ).then(c => c.InstallmentFormComponent),
+  },
+  {
     path: 'installments',
     loadComponent: () =>
       import(
         './installment/components/installment-list/installment-list.component'
       ),
-  },
-  {
-    path: 'customers',
-    loadComponent: () =>
-      import(
-        './customer/components/customer-list/customer-list.component'
-        ).then(c => c.CustomerListComponent)
   },
 ];

@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,12 +63,12 @@ public class InstallmentServiceImpl implements InstallmentService {
   }
 
   @Override
-  public void updateStatusAndDuration(Long id) {
-    installmentRepository.findById(id)
+  public RespAllInstDTO updateStatusAndDuration(Long id) {
+    return installmentRepository.findById(id)
         .map(installmentFound -> {
           installmentFound.setFinished(true);
           installmentFound.setDuration((int) calculateDuration(installmentFound.getCreatedAt()));
-          return installmentRepository.save(installmentFound);
+          return installmentMapper.toRespAllInstDTO(installmentRepository.save(installmentFound));
         })
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
@@ -85,13 +87,13 @@ public class InstallmentServiceImpl implements InstallmentService {
 
   @Override
   public RespInstStatusAndCustomerDTO instalmentByStatusCustomerId(Long id) {
-    return installmentRepository.findFirstByCustomerIdAndFinishedIsFalse(id)
+    return installmentRepository.findFirstByCustomerId(id)
         .map(respDTO ->
             new RespInstStatusAndCustomerDTO(
-                respDTO.getBadge(),
-                respDTO.getSecretary(),
-                respDTO.isFinished(),
-                respDTO.getCustomer().getName()
+                respDTO.getId(),
+                respDTO.getCustomer().getDocument(),
+                respDTO.getCustomer().getName(),
+                respDTO.isFinished()
             )
         ).orElseThrow(() -> new RecordNotFoundException(id));
   }

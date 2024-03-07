@@ -65,9 +65,8 @@ public class InstallmentController {
     return installmentService.create(reqInstDTO);
   }
   @PutMapping("/{id}/status")
-  @ResponseStatus(code = HttpStatus.NO_CONTENT)
-  public void updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
-    installmentService.updateStatusAndDuration(id);
+  public RespAllInstDTO updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
+    return installmentService.updateStatusAndDuration(id);
   }
 
 }

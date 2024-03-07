@@ -21,8 +21,12 @@ public class PgmManagerSpringApplication {
       customerRepository.deleteAll();
 
       Customer customer = new Customer();
-      customer.setName("Paulo Roberto");
-      customer.setDocument("11111111111");
+      customer.setName("Maria Fernanda");
+      customer.setDocument("22222222222");
+
+      Customer customer2 = new Customer();
+      customer2.setName("Paulo Roberto");
+      customer2.setDocument("11111111111");
 
 
       Installment i = new Installment();
@@ -34,10 +38,11 @@ public class PgmManagerSpringApplication {
       Installment i2 = new Installment();
       i2.setSecretary("SEMAD");
       i2.setBadge("04");
-      i2.setCustomer(customer);
-      customer.add(i2);
+      i2.setCustomer(customer2);
+      customer2.add(i2);
 
       customerRepository.save(customer);
+      customerRepository.save(customer2);
     };
   }
 

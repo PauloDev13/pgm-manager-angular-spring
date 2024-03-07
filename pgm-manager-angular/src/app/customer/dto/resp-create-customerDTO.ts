@@ -2,7 +2,7 @@ export interface RespCreateCustomerDTO {
   id: number;
   name: string;
   document: string;
-  installment?: {
+  installment: {
     id: number;
     secretary: string;
     badge: string;
