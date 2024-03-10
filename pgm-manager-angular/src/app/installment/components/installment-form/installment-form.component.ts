@@ -1,15 +1,25 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import {
   FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { badges, secretaries } from '../../../customer/data/secretaries';
+import { CustomerModel } from '../../../customer/model/customer.model';
 import { FormUtilsService } from '../../../shared/form/form-utils.service';
 import { RespInstallmentByCustomerIdDTO } from '../../dto/resp-installment-by-customer-idDTO';
 import { InstallmentStore } from '../../store/installment.store';
+
+type TNewInstallment = {
+  secretary: string;
+  badge: string;
+  customer: {
+    id: number;
+  };
+};
 
 @Component({
   selector: 'app-installment-form',
@@ -18,15 +28,15 @@ import { InstallmentStore } from '../../store/installment.store';
   templateUrl: './installment-form.component.html',
   styleUrl: './installment-form.component.scss',
 })
-export class InstallmentFormComponent {
+export class InstallmentFormComponent implements OnInit {
   protected inputInstallment = input<RespInstallmentByCustomerIdDTO | null>(
     null,
   );
   protected readonly listSecretaries = secretaries;
   protected readonly listBadges = badges;
   protected installmentStore = inject(InstallmentStore);
-  protected customerInfo = this.installmentStore.customerInfo;
-  // protected customerInfo = this.installmentStore.customerInfo;
+  protected customerInfo!: CustomerModel;
+  //
   protected readonly formUtilService = inject(FormUtilsService);
   private readonly fb = inject(NonNullableFormBuilder);
   // formulário
@@ -36,6 +46,26 @@ export class InstallmentFormComponent {
       badge: ['', [Validators.required]],
     }),
   });
+  private router = inject(Router);
 
-  onSubmit() {}
+  ngOnInit() {
+    this.customerInfo = history.state;
+  }
+
+  onSubmit() {
+    if (this.formInstallment.valid) {
+      const { secretary, badge } =
+        this.formInstallment.controls.installment.getRawValue();
+      const newInstallment: TNewInstallment = {
+        secretary,
+        badge,
+        customer: {
+          id: this.customerInfo.id!,
+        },
+      };
+      this.installmentStore.createInstallmentByCustomer({ newInstallment });
+      this.router.navigate(['/installments']).then();
+    }
+    this.formInstallment.markAllAsTouched();
+  }
 }

@@ -3,9 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
 import { RespCreateInstallmentDTO } from '../dto/resp-create-installmentDTO';
-import { RespInstallmentByCustomerIdDTO } from '../dto/resp-installment-by-customer-idDTO';
 import { RespInstallmentPageDTO } from '../dto/resp-installment-pageDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
+import { TNewInstallment } from '../store/installment.store';
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +26,10 @@ export class InstallmentService {
       .pipe(first());
   }
 
-  getInstallmentByCustomerId(customerId: number) {
-    return this.http.get<RespInstallmentByCustomerIdDTO>(
-      `${this.baseUrlApi}/customer_id/${customerId}/installment`,
+  createInstallmentByCustomer(newInstallment: TNewInstallment) {
+    return this.http.post<RespCreateInstallmentDTO>(
+      `${this.baseUrlApi}`,
+      newInstallment,
     );
   }
 

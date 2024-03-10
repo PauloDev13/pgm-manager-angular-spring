@@ -1,6 +1,6 @@
 package com.devpgm.pgmmanager.dto.mapper;
 
-import com.devpgm.pgmmanager.dto.*;
+import com.devpgm.pgmmanager.dto.CustomerDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
 import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
 import com.devpgm.pgmmanager.model.Customer;
@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class CustomerMapper {
 
-  // retorna um DTO sem a lsita de Installments
+  // retorna um DTO sem a lista de Installments
   public CustomerDTO toCustomerDTO(Customer customer) {
     if (customer == null) {
       return null;
@@ -25,7 +25,7 @@ public class CustomerMapper {
     );
   }
 
-  // retorna um DTO com a lsita de Installments
+  // retorna um DTO com a lista de Installments
   public CustomerRespDTO toDTO(Customer customer) {
     if (customer == null) {
       return null;
@@ -73,18 +73,14 @@ public class CustomerMapper {
   }
 
   public Customer toEntity(CustomerReqDTO requestDTO) {
-    if (requestDTO == null) {
-      return null;
-    }
-
-    Customer customer = new Customer();
-
     if (requestDTO.id() != null) {
+      Customer customer = new Customer();
       customer.setId(requestDTO.id());
-    }
-    customer.setName(requestDTO.name());
-    customer.setDocument(requestDTO.document());
+      customer.setName(requestDTO.name());
+      customer.setDocument(requestDTO.document());
 
-    return customer;
+      return customer;
+    }
+    return null;
   }
 }

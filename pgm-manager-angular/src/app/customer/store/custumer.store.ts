@@ -52,18 +52,21 @@ export const CustomerStore = signalStore(
                       ...store.listCustomers(),
                       customer,
                     ];
+
                     patchState(store, {
+                      customer,
                       listCustomers: updatedCustomer,
                       err: null,
                     });
                     // atualiza lista de installments
-                    installmentStore.loadAllPagination({ page: 0, size: 10 });
+                    // installmentStore.loadAllPagination({ page: 0, size: 10 });
                   },
                   error: (err: HttpErrorResponse) => {
                     if (err.error === 'Duplicate constraint') {
                       patchState(store, {
-                        err: 'CPF já cadastrado',
                         customer: null,
+                        listCustomers: [],
+                        err: 'CPF já cadastrado',
                       });
                     } else {
                       patchState(store, { err: err.error, customer: null });
@@ -80,7 +83,11 @@ export const CustomerStore = signalStore(
               customerService.loadPagination(page, size).pipe(
                 tapResponse({
                   next: resp => {
+                    let customer;
+                    resp.customers.map(item => (customer = item));
+
                     patchState(store, {
+                      customer,
                       listCustomers: resp.customers,
                       totalElements: resp.totalElements,
                     });

@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { InstallmentStore } from '../installment/store/installment.store';
 import { FormUtilsService } from '../shared/form/form-utils.service';
 import { badges, secretaries } from './data/secretaries';
 import { CustomerStore } from './store/custumer.store';
@@ -25,7 +24,6 @@ export default class CustomerComponent {
   // injectables
   protected readonly formUtilService = inject(FormUtilsService);
   protected readonly customerStore = inject(CustomerStore);
-  protected readonly installmentStore = inject(InstallmentStore);
   protected err = this.customerStore.err;
   // form customer
   private readonly fb = inject(NonNullableFormBuilder);
@@ -37,6 +35,7 @@ export default class CustomerComponent {
     installment: this.fb.group({
       secretary: ['', [Validators.required]],
       badge: ['', [Validators.required]],
+      finished: [false],
     }),
   });
   private readonly route = inject(Router);

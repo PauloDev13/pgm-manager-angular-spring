@@ -16,9 +16,17 @@ import { RespInstallmentByCustomerIdDTO } from '../dto/resp-installment-by-custo
 import { InstallmentListModel } from '../model/installment-list.model';
 import { InstallmentService } from '../service/installment.service';
 
-export type IPageSize = {
+export type TPageSize = {
   page: number;
   size: number;
+};
+
+export type TNewInstallment = {
+  secretary: string;
+  badge: string;
+  customer: {
+    id: number;
+  };
 };
 
 type IInstallmentState = {
@@ -58,14 +66,21 @@ export const InstallmentStore = signalStore(
           }),
         ),
       ),
-      loadAllPagination: rxMethod<IPageSize>(
+      loadAllPagination: rxMethod<TPageSize>(
         pipe(
           switchMap(({ page, size }) =>
             installmentService.loadAllPagination(page, size),
           ),
           tapResponse({
             next: resp => {
+              let installment;
+
+              resp.installments.map(item => {
+                installment = item;
+              });
+
               patchState(store, {
+                installment,
                 listInstallments: resp.installments,
                 totalElements: resp.totalElements,
               });
@@ -91,6 +106,7 @@ export const InstallmentStore = signalStore(
                     : dataInstallment;
                 });
               patchState(store, {
+                installment: respInstallment,
                 listInstallments: updatedInstallment,
                 err: null,
               });
@@ -102,29 +118,31 @@ export const InstallmentStore = signalStore(
           }),
         ), // fim do pipe
       ), // fim updateStatus
-      installmentByCustomerId: rxMethod<{ id: number }>(
+      createInstallmentByCustomer: rxMethod<{
+        newInstallment: TNewInstallment;
+      }>(
         pipe(
-          switchMap(({ id }) =>
-            installmentService.getInstallmentByCustomerId(id),
+          switchMap(({ newInstallment }) =>
+            installmentService.createInstallmentByCustomer(newInstallment),
           ),
           tapResponse({
-            next: resp => {
-              if (resp.finished) {
-                patchState(store, { customerInfo: resp });
-              } else {
-                patchState(store, {
-                  customerInfo: {} as RespInstallmentByCustomerIdDTO,
-                  err: 'Cliente em atendimento',
-                });
-              }
+            next: installment => {
+              const installmentsUpdated = [
+                ...store.listInstallments(),
+                installment,
+              ];
+              patchState(store, {
+                installment,
+                listInstallments: installmentsUpdated,
+              });
             },
             error: (errorResp: HttpErrorResponse) =>
               patchState(store, {
-                err: `err: Erro ao buscar cliente. CODE: ${errorResp.status}`,
+                err: `Erro ao criar atendimento. CODE: ${errorResp.status}`,
               }),
           }),
         ),
-      ), // fim addInstallment
+      ), // fim create installment
     }), //fim methods
   ), //final methods
   withHooks({

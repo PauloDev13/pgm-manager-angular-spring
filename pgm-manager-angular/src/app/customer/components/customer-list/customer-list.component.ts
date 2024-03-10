@@ -4,6 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 import { InstallmentStore } from '../../../installment/store/installment.store';
+import { CustomerListModel } from '../../model/customer-list.model';
 import { CustomerStore } from '../../store/custumer.store';
 
 @Component({
@@ -18,16 +19,14 @@ export class CustomerListComponent {
   protected readonly installmentStore = inject(InstallmentStore);
   //
   protected listCustomers = this.customerStore.listCustomers;
-  protected customerInfo = this.installmentStore.customerInfo;
-  protected error = this.installmentStore.err;
-  protected totalElements = this.customerStore.totalElements;
+  protected totalElements = this.customerStore.totalElements();
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
   private router = inject(Router);
 
   refresh(
     pageEvent: PageEvent = {
-      length: this.totalElements(),
+      length: this.totalElements,
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
     },
@@ -36,13 +35,23 @@ export class CustomerListComponent {
       page: pageEvent.pageIndex,
       size: pageEvent.pageSize,
     });
+    this.totalElements = this.customerStore.totalElements();
   }
 
-  onAddInstallment(id: number) {
-    console.log('ID', id);
-    this.installmentStore.installmentByCustomerId({ id });
-    console.log('ERROR NO METHOD', this.error());
-    console.log('CUSTOMER NO METHOD', this.customerInfo());
-    this.router.navigate(['/installment']).then();
+  // onAddInstallment(id: number, name: string, document: string) {
+  onAddInstallment(customer: CustomerListModel) {
+    const result = this.installmentStore
+      .listInstallments()
+      .some(resp => customer.id === resp.customer.id && !resp.finished);
+
+    if (result) {
+      alert(
+        `(${customer.name.toUpperCase()}) ESTÁ EM ATENDIMENTO NA SEC. ${this.installmentStore
+          .installment()
+          .secretary.toUpperCase()}`,
+      );
+    } else {
+      this.router.navigate(['/installment'], { state: customer }).then();
+    }
   }
 }

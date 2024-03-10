@@ -6,10 +6,10 @@
     @if (installmentStore.customerInfo()) {
       <div class="flex flex-col">
         <span class="font-medium text-white">
-          Nome: {{customerInfo().customerName }}
+          Nome: {{ customerInfo.name }}
         </span>
         <span class="font-medium text-white">
-          CPF: {{ customerInfo().document }}
+          CPF: {{ customerInfo.document }}
         </span>
       </div>
     }

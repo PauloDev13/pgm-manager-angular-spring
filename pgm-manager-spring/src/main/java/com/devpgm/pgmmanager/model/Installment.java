@@ -81,6 +81,7 @@ public class Installment {
         id,
         badge,
         secretary,
+        createdAt,
         new CustomerDTO(
             customer.getId(),
             customer.getName(),

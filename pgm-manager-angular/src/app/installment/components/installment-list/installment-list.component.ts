@@ -12,20 +12,11 @@ import { InstallmentStore } from '../../store/installment.store';
   styleUrl: './installment-list.component.scss',
 })
 export default class InstallmentListComponent {
-  protected store = inject(InstallmentStore);
-  protected totalElements = this.store.totalElements();
-  protected listInstallments = this.store.listInstallments;
+  protected installmentStore = inject(InstallmentStore);
+  protected totalElements = this.installmentStore.totalElements();
+  // protected listInstallments = this.installmentStore.listInstallments;
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
-
-  // constructor() {
-  //   effect(() => {
-  //     this.store.loadAllPagination({
-  //       page: this.pageIndex,
-  //       size: this.pageSize,
-  //     });
-  //   });
-  // }
 
   refresh(
     pageEvent: PageEvent = {
@@ -34,10 +25,10 @@ export default class InstallmentListComponent {
       pageSize: this.pageSize,
     },
   ) {
-    this.store.loadAllPagination({
+    this.installmentStore.loadAllPagination({
       page: pageEvent.pageIndex,
       size: pageEvent.pageSize,
     });
-    this.totalElements = this.store.totalElements();
+    this.totalElements = this.installmentStore.totalElements();
   }
 }
