@@ -59,7 +59,7 @@ export const CustomerStore = signalStore(
                       err: null,
                     });
                     // atualiza lista de installments
-                    // installmentStore.loadAllPagination({ page: 0, size: 10 });
+                    installmentStore.loadAllPagination({ page: 0, size: 10 });
                   },
                   error: (err: HttpErrorResponse) => {
                     if (err.error === 'Duplicate constraint') {

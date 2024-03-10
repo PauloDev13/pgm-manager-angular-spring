@@ -13,8 +13,10 @@ import { InstallmentStore } from '../../store/installment.store';
 })
 export default class InstallmentListComponent {
   protected installmentStore = inject(InstallmentStore);
+  //
+  protected listInstallments = this.installmentStore.listInstallments;
   protected totalElements = this.installmentStore.totalElements();
-  // protected listInstallments = this.installmentStore.listInstallments;
+  //
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
 

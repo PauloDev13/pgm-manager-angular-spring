@@ -52,7 +52,7 @@
     </tr>
     </thead>
     <tbody>
-      @for (installment of installmentStore.listInstallments(); track installment.id) {
+      @for (installment of listInstallments(); track installment.id) {
         <tr
           class="{{ installment.finished
                    ? 'bg-white border-b dark:bg-red-600 dark:border-gray-700 hover:bg-red-50 dark:hover:bg-red-600'

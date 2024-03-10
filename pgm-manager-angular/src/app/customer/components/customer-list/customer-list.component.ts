@@ -17,12 +17,13 @@ import { CustomerStore } from '../../store/custumer.store';
 export class CustomerListComponent {
   protected readonly customerStore = inject(CustomerStore);
   protected readonly installmentStore = inject(InstallmentStore);
+  protected readonly router = inject(Router);
   //
   protected listCustomers = this.customerStore.listCustomers;
   protected totalElements = this.customerStore.totalElements();
+  //
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
-  private router = inject(Router);
 
   refresh(
     pageEvent: PageEvent = {
@@ -45,11 +46,7 @@ export class CustomerListComponent {
       .some(resp => customer.id === resp.customer.id && !resp.finished);
 
     if (result) {
-      alert(
-        `(${customer.name.toUpperCase()}) ESTÁ EM ATENDIMENTO NA SEC. ${this.installmentStore
-          .installment()
-          .secretary.toUpperCase()}`,
-      );
+      alert(`(${customer.name.toUpperCase()}) ESTÁ EM ATENDIMENTO`);
     } else {
       this.router.navigate(['/installment'], { state: customer }).then();
     }

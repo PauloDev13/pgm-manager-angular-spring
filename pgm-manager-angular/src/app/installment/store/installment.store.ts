@@ -12,7 +12,6 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
 import { ReqCreateInstallmentDTO } from '../dto/req-create-installmentDTO';
-import { RespInstallmentByCustomerIdDTO } from '../dto/resp-installment-by-customer-idDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
 import { InstallmentService } from '../service/installment.service';
 
@@ -32,7 +31,7 @@ export type TNewInstallment = {
 type IInstallmentState = {
   installment: ReqCreateInstallmentDTO;
   listInstallments: InstallmentListModel[];
-  customerInfo: RespInstallmentByCustomerIdDTO;
+  query: TPageSize;
   totalElements: number;
   err: string | null;
 };
@@ -40,7 +39,7 @@ type IInstallmentState = {
 const initialInstallmentStoreState: IInstallmentState = {
   installment: {} as ReqCreateInstallmentDTO,
   listInstallments: [] as InstallmentListModel[],
-  customerInfo: {} as RespInstallmentByCustomerIdDTO,
+  query: { page: 0, size: 10 },
   totalElements: 0,
   err: null,
 };
@@ -83,6 +82,7 @@ export const InstallmentStore = signalStore(
                 installment,
                 listInstallments: resp.installments,
                 totalElements: resp.totalElements,
+                err: null,
               });
             },
             error: (err: HttpErrorResponse) =>
@@ -134,6 +134,7 @@ export const InstallmentStore = signalStore(
               patchState(store, {
                 installment,
                 listInstallments: installmentsUpdated,
+                err: null,
               });
             },
             error: (errorResp: HttpErrorResponse) =>
@@ -146,8 +147,8 @@ export const InstallmentStore = signalStore(
     }), //fim methods
   ), //final methods
   withHooks({
-    onInit({ loadAllPagination }) {
-      loadAllPagination({ page: 0, size: 10 });
+    onInit({ loadAllPagination, query }) {
+      loadAllPagination(query);
     },
   }),
 ); //final rotina
