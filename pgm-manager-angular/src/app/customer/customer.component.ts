@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 
 import { FormUtilsService } from '../shared/form/form-utils.service';
-import { badges, secretaries } from './data/secretaries';
+import { UtilService } from '../shared/service/util.service';
 import { CustomerStore } from './store/custumer.store';
 
 @Component({
@@ -19,14 +19,14 @@ import { CustomerStore } from './store/custumer.store';
   styleUrl: './customer.component.scss',
 })
 export default class CustomerComponent {
-  protected readonly listSecretaries = secretaries;
-  protected readonly listBadges = badges;
   // injectables
   protected readonly formUtilService = inject(FormUtilsService);
+  protected readonly fb = inject(NonNullableFormBuilder);
+  protected readonly utilService = inject(UtilService);
   protected readonly customerStore = inject(CustomerStore);
-  protected err = this.customerStore.err;
+  // Variables
+  protected readonly err = this.customerStore.err();
   // form customer
-  private readonly fb = inject(NonNullableFormBuilder);
   protected formCustomer = this.fb.group({
     customer: this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
@@ -47,10 +47,12 @@ export default class CustomerComponent {
 
       this.customerStore.create({ ...customer, installment });
 
-      if (this.err() === null) {
-        this.route
-          .navigate(['/installments'])
-          .then(() => alert(`${customer.name} cadastrado(a) com sucesso`));
+      console.log('CUSTOMER ERROR', this.customerStore);
+
+      if (this.customerStore.customer()?.document !== customer.document) {
+        this.route.navigate(['/installments']).then(() => {
+          console.log(`${customer.name} cadastrado(a) com sucesso`);
+        });
 
         this.formCustomer.reset();
       }

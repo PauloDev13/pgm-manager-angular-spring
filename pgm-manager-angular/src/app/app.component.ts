@@ -39,13 +39,10 @@ export class AppComponent {
   sidebarSignal = inject(SideBarSignal);
   screenSignal = inject(ScreenSizeSignal);
   currentScreen = '';
-
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   toggle() {
     this.sidenav.toggle().then();
-    // this.showFiller = !this.showFiller;
-    // this.showFiller ? this.sidenav.open() : this.sidenav.close();
   }
   computeSize(size: string) {
     this.currentScreen = size;

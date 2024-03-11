@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
+import { CustomerStore } from '../../../customer/store/custumer.store';
 import { InstallmentStore } from '../../store/installment.store';
 
 @Component({
@@ -13,6 +14,7 @@ import { InstallmentStore } from '../../store/installment.store';
 })
 export default class InstallmentListComponent {
   protected installmentStore = inject(InstallmentStore);
+  protected customerStore = inject(CustomerStore);
   //
   protected listInstallments = this.installmentStore.listInstallments;
   protected totalElements = this.installmentStore.totalElements();

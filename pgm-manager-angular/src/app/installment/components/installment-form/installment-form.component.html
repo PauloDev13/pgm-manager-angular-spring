@@ -18,13 +18,14 @@
       <div class="relative z-0 w-auto mb-5 group">
         <label class="sr-only" for="secretary">Selecione</label>
         <select
+          (change)="utilService.getBadges(formInstallment.getRawValue().installment.secretary)"
           class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent dark:bg-gray-800
                 border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-200 dark:border-gray-700
                 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
           formControlName="secretary"
           id="secretary">
           <option selected value="">Secretaria/Destino</option>
-          @for (secretary of listSecretaries; track $index) {
+          @for (secretary of utilService.listSecretaries; track $index) {
             <option
               value="{{ secretary.description }}">
               {{ secretary.name }}
@@ -49,7 +50,7 @@
           formControlName="badge"
           id="badge">
           <option selected value="">Nº crachá</option>
-          @for (badge of listBadges; track $index) {
+          @for (badge of utilService.availableBadges; track $index) {
             <option value="{{ badge }}">{{ badge }}</option>
           }
         </select>

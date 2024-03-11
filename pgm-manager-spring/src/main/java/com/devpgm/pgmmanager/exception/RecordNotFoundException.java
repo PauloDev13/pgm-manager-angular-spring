@@ -7,6 +7,6 @@ public class RecordNotFoundException extends RuntimeException{
   }
 
   public RecordNotFoundException() {
-    super("Registro para os dados informados");
+    super("Sem registro para os dados informados");
   }
 }

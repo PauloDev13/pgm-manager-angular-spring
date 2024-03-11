@@ -42,7 +42,7 @@ public class InstallmentController {
   }
 
   @GetMapping("/badges/{secretary}")
-  public List<String> badgesStatus(@PathVariable @NotNull String secretary) {
+  public List<String> badgesBySecretary(@PathVariable @NotNull String secretary) {
     return installmentService.listBadgesBySecretary(secretary);
   }
 

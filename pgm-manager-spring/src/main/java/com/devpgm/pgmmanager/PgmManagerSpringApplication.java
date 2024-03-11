@@ -30,13 +30,13 @@ public class PgmManagerSpringApplication {
 
 
       Installment i = new Installment();
-      i.setSecretary("PGM");
+      i.setSecretary("pgm");
       i.setBadge("02");
       i.setCustomer(customer);
       customer.add(i);
 
       Installment i2 = new Installment();
-      i2.setSecretary("SEMAD");
+      i2.setSecretary("semur");
       i2.setBadge("04");
       i2.setCustomer(customer2);
       customer2.add(i2);

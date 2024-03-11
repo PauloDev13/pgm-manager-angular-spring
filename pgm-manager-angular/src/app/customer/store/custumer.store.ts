@@ -11,7 +11,10 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
-import { InstallmentStore } from '../../installment/store/installment.store';
+import {
+  InstallmentStore,
+  TPageSize,
+} from '../../installment/store/installment.store';
 import { ReqCreateCustomerDTO } from '../dto/req-create-customerDTO';
 import { CustomerListModel } from '../model/customer-list.model';
 import { CustomerService } from '../service/customer.service';
@@ -19,6 +22,7 @@ import { CustomerService } from '../service/customer.service';
 type ICustomerStoreState = {
   customer: ReqCreateCustomerDTO | null;
   listCustomers: CustomerListModel[];
+  query: TPageSize;
   totalElements: number;
   err: string | null;
 };
@@ -26,6 +30,7 @@ type ICustomerStoreState = {
 const initialCustomerStoreState: ICustomerStoreState = {
   customer: null,
   listCustomers: [],
+  query: { page: 0, size: 10 },
   totalElements: 0,
   err: null,
 };
@@ -34,7 +39,6 @@ export const CustomerStore = signalStore(
   { providedIn: 'root' },
 
   withState<ICustomerStoreState>(initialCustomerStoreState),
-
   withMethods(
     (
       store,
@@ -59,7 +63,7 @@ export const CustomerStore = signalStore(
                       err: null,
                     });
                     // atualiza lista de installments
-                    installmentStore.loadAllPagination({ page: 0, size: 10 });
+                    installmentStore.loadAllPagination(store.query);
                   },
                   error: (err: HttpErrorResponse) => {
                     if (err.error === 'Duplicate constraint') {
@@ -68,8 +72,13 @@ export const CustomerStore = signalStore(
                         listCustomers: [],
                         err: 'CPF já cadastrado',
                       });
+                      console.log('ERROR1', store.err());
                     } else {
-                      patchState(store, { err: err.error, customer: null });
+                      patchState(store, {
+                        err: err.error,
+                        customer: null,
+                      });
+                      console.log('ERROR2', store.err());
                     }
                   },
                 }),
@@ -105,8 +114,8 @@ export const CustomerStore = signalStore(
     },
   ),
   withHooks({
-    onInit({ loadAllPagination }) {
-      loadAllPagination({ page: 0, size: 10 });
+    onInit({ loadAllPagination, query }) {
+      loadAllPagination(query);
     },
   }),
 );

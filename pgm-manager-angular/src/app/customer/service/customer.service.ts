@@ -10,8 +10,10 @@ import { CustomerListModel } from '../model/customer-list.model';
   providedIn: 'root',
 })
 export class CustomerService {
-  private baseUrlApi = 'http://localhost:8081/api/customers';
-  private http = inject(HttpClient);
+  // Injectables
+  protected readonly http = inject(HttpClient);
+  // Variables
+  protected readonly baseUrlApi = 'http://localhost:8081/api/customers';
 
   createCustomer(customer: ReqCreateCustomerDTO) {
     return this.http.post<CustomerListModel>(this.baseUrlApi, customer);

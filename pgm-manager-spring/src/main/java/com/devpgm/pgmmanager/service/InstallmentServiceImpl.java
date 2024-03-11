@@ -75,11 +75,7 @@ public class InstallmentServiceImpl implements InstallmentService {
 
   @Override
   public List<String> listBadgesBySecretary(String secretary) {
-    List<Installment> list = installmentRepository.findBySecretaryAndFinishedIsFalse(secretary.toUpperCase());
-
-    if (list.isEmpty()) {
-      throw new RecordNotFoundException();
-    }
+    List<Installment> list = installmentRepository.findBySecretaryAndFinishedIsFalse(secretary.toLowerCase());
 
     return list.stream()
         .map(Installment::getBadge).toList();
