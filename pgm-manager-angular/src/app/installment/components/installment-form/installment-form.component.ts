@@ -61,7 +61,11 @@ export class InstallmentFormComponent implements OnInit {
         },
       };
       this.installmentStore.createInstallmentByCustomer({ newInstallment });
-      this.router.navigate(['/installments']).then();
+      this.router
+        .navigate(['/installments'])
+        .then(() =>
+          console.log(`Atendimento criado para: (${this.customerInfo.name}`),
+        );
     }
     this.formInstallment.markAllAsTouched();
   }

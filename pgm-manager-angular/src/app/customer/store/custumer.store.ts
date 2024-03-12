@@ -19,7 +19,7 @@ import { ReqCreateCustomerDTO } from '../dto/req-create-customerDTO';
 import { CustomerListModel } from '../model/customer-list.model';
 import { CustomerService } from '../service/customer.service';
 
-type ICustomerStoreState = {
+type TCustomerStoreState = {
   customer: ReqCreateCustomerDTO | null;
   listCustomers: CustomerListModel[];
   query: TPageSize;
@@ -27,7 +27,7 @@ type ICustomerStoreState = {
   err: string | null;
 };
 
-const initialCustomerStoreState: ICustomerStoreState = {
+const initialCustomerStoreState: TCustomerStoreState = {
   customer: null,
   listCustomers: [],
   query: { page: 0, size: 10 },
@@ -38,7 +38,7 @@ const initialCustomerStoreState: ICustomerStoreState = {
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
 
-  withState<ICustomerStoreState>(initialCustomerStoreState),
+  withState<TCustomerStoreState>(initialCustomerStoreState),
   withMethods(
     (
       store,
@@ -70,15 +70,13 @@ export const CustomerStore = signalStore(
                       patchState(store, {
                         customer: null,
                         listCustomers: [],
-                        err: 'CPF já cadastrado',
+                        err: err.message,
                       });
-                      console.log('ERROR1', store.err());
                     } else {
                       patchState(store, {
                         err: err.error,
                         customer: null,
                       });
-                      console.log('ERROR2', store.err());
                     }
                   },
                 }),
@@ -92,11 +90,7 @@ export const CustomerStore = signalStore(
               customerService.loadPagination(page, size).pipe(
                 tapResponse({
                   next: resp => {
-                    let customer;
-                    resp.customers.map(item => (customer = item));
-
                     patchState(store, {
-                      customer,
                       listCustomers: resp.customers,
                       totalElements: resp.totalElements,
                     });
