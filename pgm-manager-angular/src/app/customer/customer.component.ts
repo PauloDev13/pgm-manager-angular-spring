@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 
 import { FormUtilsService } from '../shared/form/form-utils.service';
 import { UtilService } from '../shared/service/util.service';
+import { CustomAsynchronousValidationService } from '../shared/utils/custom-asynchronous- validation.service';
 import { CustomerStore } from './store/custumer.store';
 
 @Component({
@@ -21,16 +22,23 @@ import { CustomerStore } from './store/custumer.store';
 export default class CustomerComponent {
   // injectables
   protected readonly formUtilService = inject(FormUtilsService);
+  protected readonly asyncValidationService = inject(
+    CustomAsynchronousValidationService,
+  );
   protected readonly fb = inject(NonNullableFormBuilder);
   protected readonly utilService = inject(UtilService);
   protected readonly customerStore = inject(CustomerStore);
   // Variables
-  protected readonly err = this.customerStore.err();
+  protected readonly isCPFExist = signal<boolean>(false);
   // form customer
   protected formCustomer = this.fb.group({
     customer: this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
-      document: ['', [Validators.required, Validators.minLength(11)]],
+      document: [
+        '',
+        [Validators.required, Validators.minLength(11)],
+        [this.asyncValidationService.isCpfExists()],
+      ],
     }),
     installment: this.fb.group({
       secretary: ['', [Validators.required]],
@@ -45,19 +53,22 @@ export default class CustomerComponent {
       const { customer } = this.formCustomer.getRawValue();
       const { installment } = this.formCustomer.getRawValue();
 
-      this.customerStore.create({ ...customer, installment });
+      if (!this.isCPFExist) {
+        this.customerStore.create({ ...customer, installment });
 
-      console.log('CUSTOMER ERROR', this.customerStore);
-
-      if (this.customerStore.customer()?.document !== customer.document) {
         this.route.navigate(['/installments']).then(() => {
-          console.log(`${customer.name} cadastrado(a) com sucesso`);
+          this.isCPFExist.update(() => false);
+          console.log(`Usuário ${customer.name} cadastrado(a) com sucesso`);
         });
-
-        this.formCustomer.reset();
       }
     }
 
     this.formCustomer.markAllAsTouched();
+  }
+
+  private isExists(cpf: string) {
+    this.isCPFExist.set(
+      this.customerStore.listCustomers().some(resp => resp.document === cpf),
+    );
   }
 }

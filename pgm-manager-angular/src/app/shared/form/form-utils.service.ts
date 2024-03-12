@@ -52,6 +52,10 @@ export class FormUtilsService {
       return `Campo deve ter no máximo ${requiredLength} caracteres.`;
     }
 
+    if (field.hasError('isCpfExists')) {
+      return 'CPF já cadastrado';
+    }
+
     return 'Campo inválido.';
   }
 }
