@@ -44,6 +44,20 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
+  public CustomerPageDTO customersSearchPagination(String search, int page, int size) {
+    Page<Customer> pageCustomers = customerRepository
+            .searchPagination(
+                    search, PageRequest.of(page, size));
+    List<CustomerRespDTO> customers = pageCustomers.get().map(customerMapper::toDTO).toList();
+    return new CustomerPageDTO(
+            customers,
+            pageCustomers.getTotalElements(),
+            pageCustomers.getTotalPages()
+    );
+  }
+
+
+  @Override
   public CustomerRespDTO findById(Long id) {
     return customerRepository.findById(id)
         .map(customerMapper::toDTO)

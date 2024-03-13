@@ -38,6 +38,15 @@ public class CustomerController {
     return customerService.customersPagination(page, size);
   }
 
+  @GetMapping("/search")
+  public CustomerPageDTO customersSearchPagination(
+          @RequestParam( defaultValue = "") String search,
+          @RequestParam(defaultValue = "0")@PositiveOrZero int page,
+          @RequestParam(defaultValue = "10") @Positive @Max(100) int size
+  ) {
+    return customerService.customersSearchPagination(search, page, size);
+  }
+
   @GetMapping("/cpf_exists")
   public boolean isCPFExist(@PathParam("document") @NotNull String document) {
     return customerService.isCPFExist(document);

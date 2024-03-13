@@ -1,8 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { first } from 'rxjs';
 
 import { badges, secretaries } from '../../customer/data/secretaries';
+import { RespCustomerPageDTO } from '../../customer/dto/resp-customer-pageDTO';
 import { InstallmentStore } from '../../installment/store/installment.store';
+
+export type TSearchFilter = {
+  search: string;
+  page: number;
+  size: number;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +22,21 @@ export class UtilService {
   // Stores
   protected installmentStore = inject(InstallmentStore);
   protected readonly listBadges = badges;
-  protected readonly baseUrlApi = 'http://localhost:8081/api/installments';
+  protected readonly baseUrlApi = 'http://localhost:8081/api';
   protected readonly http = inject(HttpClient);
 
   getBadgesBySecretary(secretary: string) {
-    return this.http.get<string[]>(`${this.baseUrlApi}/badges/${secretary}`);
+    return this.http.get<string[]>(
+      `${this.baseUrlApi}/installments/badges/${secretary}`,
+    );
+  }
+
+  loadSearchPagination(searchFilter: TSearchFilter) {
+    return this.http
+      .get<RespCustomerPageDTO>(`${this.baseUrlApi}/customers/search`, {
+        params: searchFilter,
+      })
+      .pipe(first());
   }
 
   getBadges(secretary: string) {
