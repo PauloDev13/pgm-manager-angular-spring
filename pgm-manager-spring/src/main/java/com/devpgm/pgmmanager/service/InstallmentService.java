@@ -7,6 +7,7 @@ import java.util.List;
 public interface InstallmentService {
   List<RespAllInstDTO> installments();
   InstallmentPageDTO  installmentsPagination(int page, int size);
+  InstallmentPageDTO  installmentsSearchPagination(String query, int page, int size);
   RespAllInstDTO findOneInstallment(Long id);
   RespCreatInstDTO create(ReqInstDTO reqInstDTO);
   RespAllInstDTO updateStatusAndDuration(Long id);

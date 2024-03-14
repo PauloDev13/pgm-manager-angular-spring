@@ -49,6 +49,17 @@ public class InstallmentServiceImpl implements InstallmentService {
                 pageInstallments.getTotalPages());
     }
 
+    @Override
+    public InstallmentPageDTO installmentsSearchPagination(String query, int page, int size) {
+      Page<Installment> pageInstallments = installmentRepository.searchPagination(query, PageRequest.of(page, size));
+        List<RespAllInstDTO> installments =
+                pageInstallments.get().map(installmentMapper::toRespAllInstDTO).toList();
+        return new InstallmentPageDTO(
+                installments,
+                pageInstallments.getTotalElements(),
+                pageInstallments.getTotalPages());
+    }
+
     @Transactional
   @Override
   public RespCreatInstDTO create(ReqInstDTO reqInstDTO) {

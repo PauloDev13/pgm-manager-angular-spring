@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
+import { TSearchQuery } from '../../shared/types/shared.type';
 import { RespCreateInstallmentDTO } from '../dto/resp-create-installmentDTO';
 import { RespInstallmentPageDTO } from '../dto/resp-installment-pageDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
@@ -22,6 +23,14 @@ export class InstallmentService {
     return this.http
       .get<RespInstallmentPageDTO>(`${this.baseUrlApi}/pagination`, {
         params: { page, size },
+      })
+      .pipe(first());
+  }
+
+  loadSearchPagination(criteria: Partial<TSearchQuery>) {
+    return this.http
+      .get<RespInstallmentPageDTO>(`${this.baseUrlApi}/search`, {
+        params: criteria,
       })
       .pipe(first());
   }

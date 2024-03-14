@@ -9,9 +9,9 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 
-import { TPageAndSize } from '../../shared/types/shared.type';
+import { TPageAndSize, TSearchQuery } from '../../shared/types/shared.type';
 import { ReqCreateInstallmentDTO } from '../dto/req-create-installmentDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
 import { InstallmentService } from '../service/installment.service';
@@ -20,7 +20,15 @@ import { TInstallmentState, TNewInstallment } from '../types/installment.type';
 const initialInstallmentStoreState: TInstallmentState = {
   installment: {} as ReqCreateInstallmentDTO,
   listInstallments: [] as InstallmentListModel[],
-  query: { page: 0, size: 10 },
+  query: {
+    page: 0,
+    size: 10,
+  },
+  searchQuery: {
+    query: '',
+    page: 0,
+    size: 10,
+  },
   totalElements: 0,
   err: null,
 };
@@ -32,12 +40,22 @@ export const InstallmentStore = signalStore(
 
   withMethods(
     (store, installmentService = inject(InstallmentService)) => ({
-      loadAll: rxMethod<void>(
+      updateFilter(criteria: Partial<TSearchQuery>) {
+        patchState(store, { searchQuery: criteria });
+      },
+      loadSearchPagination: rxMethod<Partial<TSearchQuery>>(
         pipe(
-          switchMap(() => installmentService.loadAll()),
+          debounceTime(300),
+          distinctUntilChanged(),
+          switchMap(criteria =>
+            installmentService.loadSearchPagination(criteria),
+          ),
           tapResponse({
-            next: listInstallments => {
-              patchState(store, { listInstallments });
+            next: ({ installments, totalElements }) => {
+              patchState(store, {
+                listInstallments: installments,
+                totalElements,
+              });
             },
             error: (err: HttpErrorResponse) =>
               patchState(store, {
@@ -128,8 +146,8 @@ export const InstallmentStore = signalStore(
     }), //fim methods
   ), //final methods
   withHooks({
-    onInit({ loadAllPagination, query }) {
-      loadAllPagination(query);
+    onInit({ loadSearchPagination, searchQuery }) {
+      loadSearchPagination(searchQuery);
     },
   }),
 ); //final rotina

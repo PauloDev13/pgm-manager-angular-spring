@@ -36,6 +36,15 @@ public class InstallmentController {
     return installmentService.installmentsPagination(page, size);
   }
 
+  @GetMapping("/search")
+  public InstallmentPageDTO installmentsSearchPagination(
+          @RequestParam(defaultValue = "") String query,
+          @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+          @RequestParam(defaultValue = "10") @Positive @Max(100) int size)
+  {
+    return installmentService.installmentsSearchPagination(query, page, size);
+  }
+
   @GetMapping("/{id}")
   public RespAllInstDTO getOneInstallment(@PathVariable @NotNull @Positive Long id) {
     return installmentService.findOneInstallment(id);

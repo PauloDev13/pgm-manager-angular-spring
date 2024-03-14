@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
+import { SearchComponent } from '../../../core/components/search/search.component';
 import { InstallmentStore } from '../../../installment/store/installment.store';
 import { TSearchQuery } from '../../../shared/types/shared.type';
 import { CustomerListModel } from '../../model/customer-list.model';
@@ -12,7 +13,7 @@ import { CustomerStore } from '../../store/custumer.store';
 @Component({
   selector: 'app-customer-list',
   standalone: true,
-  imports: [DatePipe, MatPaginator, ReactiveFormsModule],
+  imports: [DatePipe, MatPaginator, ReactiveFormsModule, SearchComponent],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.scss',
 })
