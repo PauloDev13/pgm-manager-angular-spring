@@ -35,7 +35,6 @@ import { SideBarSignal } from './shared/signals/sidebar.signal';
 export class AppComponent {
   title = 'pgm atendimento';
 
-  showFiller = false;
   sidebarSignal = inject(SideBarSignal);
   screenSignal = inject(ScreenSizeSignal);
   currentScreen = '';

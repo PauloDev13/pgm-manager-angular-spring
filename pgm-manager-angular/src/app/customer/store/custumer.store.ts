@@ -10,31 +10,26 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, pipe, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 
-import {
-  InstallmentStore,
-  TPageSize,
-} from '../../installment/store/installment.store';
-import { TSearchFilter, UtilService } from '../../shared/service/util.service';
+import { InstallmentStore } from '../../installment/store/installment.store';
+import { TSearchQuery } from '../../shared/types/shared.type';
 import { ReqCreateCustomerDTO } from '../dto/req-create-customerDTO';
-import { CustomerListModel } from '../model/customer-list.model';
 import { CustomerService } from '../service/customer.service';
-
-type TCustomerStoreState = {
-  customer: ReqCreateCustomerDTO | null;
-  listCustomers: CustomerListModel[];
-  query: TPageSize;
-  searchFilter: TSearchFilter;
-  totalElements: number;
-  err: string | null;
-};
+import { TCustomerStoreState } from '../types/customer.type';
 
 const initialCustomerStoreState: TCustomerStoreState = {
   customer: null,
   listCustomers: [],
-  query: { page: 0, size: 10 },
-  searchFilter: { search: '', page: 0, size: 10 },
+  query: {
+    page: 0,
+    size: 10,
+  },
+  searchQuery: {
+    query: '',
+    page: 0,
+    size: 10,
+  },
   totalElements: 0,
   err: null,
 };
@@ -44,21 +39,16 @@ export const CustomerStore = signalStore(
 
   withState<TCustomerStoreState>(initialCustomerStoreState),
   withComputed(store => ({
-    criteria: computed(() => ({
-      search: store.searchFilter.search,
-      page: store.searchFilter.page,
-      size: store.searchFilter.size,
-    })),
+    criteria: computed(() => store.searchQuery),
   })),
   withMethods(
     (
       store,
       customerService = inject(CustomerService),
-      utilService = inject(UtilService),
       installmentStore = inject(InstallmentStore),
     ) => ({
-      updateFilter(searchFilter: TSearchFilter) {
-        patchState(store, { searchFilter });
+      updateFilter(criteria: Partial<TSearchQuery>) {
+        patchState(store, { searchQuery: criteria });
       },
       create: rxMethod<ReqCreateCustomerDTO>(
         pipe(
@@ -95,41 +85,18 @@ export const CustomerStore = signalStore(
           }),
         ),
       ),
-      loadAllPagination: rxMethod<{ page: number; size: number }>(
-        pipe(
-          switchMap(({ page, size }) =>
-            customerService.loadPagination(page, size).pipe(
-              tapResponse({
-                next: resp => {
-                  patchState(store, {
-                    listCustomers: resp.customers,
-                    totalElements: resp.totalElements,
-                  });
-                },
-                error: (errorResp: HttpErrorResponse) =>
-                  patchState(store, {
-                    err: `Erro ao buscar dados. CODE: ${errorResp.status}`,
-                  }),
-              }),
-            ),
-          ),
-        ),
-      ),
-      loadSearchPagination: rxMethod<TSearchFilter>(
+      loadSearchPagination: rxMethod<Partial<TSearchQuery>>(
         pipe(
           debounceTime(300),
-          switchMap(filter =>
-            utilService.loadSearchPagination({
-              search: filter.search,
-              page: filter.page,
-              size: filter.size,
-            }),
-          ),
+          distinctUntilChanged(),
+          switchMap(criteria => {
+            return customerService.loadSearchPagination(criteria);
+          }),
           tapResponse({
-            next: resp => {
+            next: ({ customers, totalElements }) => {
               patchState(store, {
-                listCustomers: resp.customers,
-                totalElements: resp.totalElements,
+                listCustomers: customers,
+                totalElements,
               });
             },
             error: (errorResp: HttpErrorResponse) =>
@@ -142,9 +109,8 @@ export const CustomerStore = signalStore(
     }),
   ),
   withHooks({
-    onInit({ loadAllPagination, query, loadSearchPagination, searchFilter }) {
-      loadAllPagination(query);
-      loadSearchPagination(searchFilter);
+    onInit({ loadSearchPagination, searchQuery }) {
+      loadSearchPagination(searchQuery);
     },
   }),
 );

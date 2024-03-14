@@ -5,7 +5,7 @@ import { first } from 'rxjs';
 import { RespCreateInstallmentDTO } from '../dto/resp-create-installmentDTO';
 import { RespInstallmentPageDTO } from '../dto/resp-installment-pageDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
-import { TNewInstallment } from '../store/installment.store';
+import { TNewInstallment } from '../types/installment.type';
 
 @Injectable({
   providedIn: 'root',

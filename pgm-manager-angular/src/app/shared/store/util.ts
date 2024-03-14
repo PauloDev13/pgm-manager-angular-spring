@@ -5,18 +5,13 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
-import { badges } from '../../customer/data/secretaries';
+import { BADGES } from '../data/secretaries';
 import { UtilService } from '../service/util.service';
-
-type TUtilState = {
-  originalBadges: string[];
-  availableBadges: string[];
-  err: string | null;
-};
+import { TUtilState } from '../types/shared.type';
 
 const TInitialUtilStoreState: TUtilState = {
-  originalBadges: badges,
-  availableBadges: badges,
+  originalBadges: BADGES,
+  availableBadges: BADGES,
   err: null,
 };
 

@@ -1,6 +1,6 @@
-import { SecretaryModel } from '../model/secretary,model';
+import { SecretaryModel } from '../../customer/model/secretary,model';
 
-export const secretaries: SecretaryModel[] = [
+export const SECRETARIES: SecretaryModel[] = [
   {
     name: 'Procuradora Geral',
     description: 'pgm',
@@ -19,7 +19,7 @@ export const secretaries: SecretaryModel[] = [
   },
 ];
 
-export const badges: string[] = [
+export const BADGES: string[] = [
   '01',
   '02',
   '03',

@@ -10,7 +10,7 @@ import java.util.List;
 public interface CustomerService {
   List<CustomerRespDTO> customers();
   CustomerPageDTO customersPagination(int page, int size);
-  CustomerPageDTO customersSearchPagination(String search, int page, int size);
+  CustomerPageDTO customersSearchPagination(String query, int page, int size);
   boolean isCPFExist(String document);
 
 

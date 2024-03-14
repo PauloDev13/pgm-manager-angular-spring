@@ -40,11 +40,11 @@ public class CustomerController {
 
   @GetMapping("/search")
   public CustomerPageDTO customersSearchPagination(
-          @RequestParam( defaultValue = "") String search,
+          @RequestParam( defaultValue = "") String query,
           @RequestParam(defaultValue = "0")@PositiveOrZero int page,
           @RequestParam(defaultValue = "10") @Positive @Max(100) int size
   ) {
-    return customerService.customersSearchPagination(search, page, size);
+    return customerService.customersSearchPagination(query, page, size);
   }
 
   @GetMapping("/cpf_exists")

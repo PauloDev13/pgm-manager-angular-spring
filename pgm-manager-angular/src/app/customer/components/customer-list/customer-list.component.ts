@@ -1,11 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 import { InstallmentStore } from '../../../installment/store/installment.store';
-import { TSearchFilter } from '../../../shared/service/util.service';
+import { TSearchQuery } from '../../../shared/types/shared.type';
 import { CustomerListModel } from '../../model/customer-list.model';
 import { CustomerStore } from '../../store/custumer.store';
 
@@ -16,35 +16,31 @@ import { CustomerStore } from '../../store/custumer.store';
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.scss',
 })
-export class CustomerListComponent {
+export class CustomerListComponent implements OnInit {
   //Stores
   protected readonly customerStore = inject(CustomerStore);
   protected readonly installmentStore = inject(InstallmentStore);
   protected readonly router = inject(Router);
   // Variables
-  protected listCustomers = this.customerStore.listCustomers;
-  protected totalElements = this.customerStore.totalElements();
-  protected searchFilter = this.customerStore.searchFilter;
-  //
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
-  protected searchField = new FormControl();
+
+  ngOnInit() {
+    this.refresh();
+  }
 
   refresh(
     pageEvent: PageEvent = {
-      length: this.totalElements,
+      length: this.customerStore.totalElements(),
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
     },
   ) {
-    this.customerStore.loadAllPagination({
+    this.customerStore.loadSearchPagination({
       page: pageEvent.pageIndex,
       size: pageEvent.pageSize,
     });
-    this.totalElements = this.customerStore.totalElements();
   }
-
-  // onAddInstallment(id: number, name: string, document: string) {
   onAddInstallment(customer: CustomerListModel) {
     const result = this.installmentStore
       .listInstallments()
@@ -57,11 +53,7 @@ export class CustomerListComponent {
     }
   }
 
-  updateSearch(searchFilter: TSearchFilter) {
-    this.customerStore.updateFilter(searchFilter);
-  }
-
-  teste(event: any) {
-    console.log(event);
+  updateSearch(criteria: Partial<TSearchQuery>) {
+    this.customerStore.updateFilter(criteria);
   }
 }

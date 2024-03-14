@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
+import { TSearchQuery } from '../../shared/types/shared.type';
 import { ReqCreateCustomerDTO } from '../dto/req-create-customerDTO';
 import { RespCustomerPageDTO } from '../dto/resp-customer-pageDTO';
 import { CustomerListModel } from '../model/customer-list.model';
@@ -19,10 +20,10 @@ export class CustomerService {
     return this.http.post<CustomerListModel>(this.baseUrlApi, customer);
   }
 
-  loadPagination(page: number = 0, size: number = 10) {
+  loadSearchPagination(criteria: Partial<TSearchQuery>) {
     return this.http
-      .get<RespCustomerPageDTO>(`${this.baseUrlApi}/pagination`, {
-        params: { page, size },
+      .get<RespCustomerPageDTO>(`${this.baseUrlApi}/search`, {
+        params: criteria,
       })
       .pipe(first());
   }

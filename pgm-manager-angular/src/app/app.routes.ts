@@ -30,7 +30,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import(
         './installment/components/installment-form/installment-form.component'
-      ).then(c => c.InstallmentFormComponent),
+      ).then(i => i.InstallmentFormComponent),
   },
   {
     path: 'installments',

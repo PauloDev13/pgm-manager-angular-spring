@@ -11,32 +11,13 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
+import { TPageAndSize } from '../../shared/types/shared.type';
 import { ReqCreateInstallmentDTO } from '../dto/req-create-installmentDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
 import { InstallmentService } from '../service/installment.service';
+import { TInstallmentState, TNewInstallment } from '../types/installment.type';
 
-export type TPageSize = {
-  page: number;
-  size: number;
-};
-
-export type TNewInstallment = {
-  secretary: string;
-  badge: string;
-  customer: {
-    id: number;
-  };
-};
-
-type IInstallmentState = {
-  installment: ReqCreateInstallmentDTO;
-  listInstallments: InstallmentListModel[];
-  query: TPageSize;
-  totalElements: number;
-  err: string | null;
-};
-
-const initialInstallmentStoreState: IInstallmentState = {
+const initialInstallmentStoreState: TInstallmentState = {
   installment: {} as ReqCreateInstallmentDTO,
   listInstallments: [] as InstallmentListModel[],
   query: { page: 0, size: 10 },
@@ -47,7 +28,7 @@ const initialInstallmentStoreState: IInstallmentState = {
 export const InstallmentStore = signalStore(
   { providedIn: 'root' },
 
-  withState<IInstallmentState>(initialInstallmentStoreState),
+  withState<TInstallmentState>(initialInstallmentStoreState),
 
   withMethods(
     (store, installmentService = inject(InstallmentService)) => ({
@@ -65,7 +46,7 @@ export const InstallmentStore = signalStore(
           }),
         ),
       ),
-      loadAllPagination: rxMethod<TPageSize>(
+      loadAllPagination: rxMethod<TPageAndSize>(
         pipe(
           switchMap(({ page, size }) =>
             installmentService.loadAllPagination(page, size),

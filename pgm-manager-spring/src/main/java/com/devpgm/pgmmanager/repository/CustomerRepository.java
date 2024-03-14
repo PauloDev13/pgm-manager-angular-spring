@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByDocument(String document);
-    @Query("SELECT c FROM Customer c WHERE lower(c.name) LIKE concat('%', lower(:search), '%') OR " +
-            "c.document LIKE concat('%', lower(:search), '%') ORDER BY c.name ASC")
-    Page<Customer> searchPagination(String search, Pageable pageable);
+    @Query("SELECT c FROM Customer c WHERE lower(c.name) LIKE concat('%', lower(:query), '%') OR " +
+            "c.document LIKE concat('%', lower(:query), '%') ORDER BY c.name ASC")
+    Page<Customer> searchPagination(String query, Pageable pageable);
 }
