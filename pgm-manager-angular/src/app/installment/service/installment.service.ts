@@ -15,10 +15,6 @@ export class InstallmentService {
   private readonly baseUrlApi = 'http://localhost:8081/api/installments';
   private readonly http = inject(HttpClient);
 
-  loadAll() {
-    return this.http.get<RespCreateInstallmentDTO[]>(this.baseUrlApi);
-  }
-
   loadAllPagination(page: number = 0, size: number = 10) {
     return this.http
       .get<RespInstallmentPageDTO>(`${this.baseUrlApi}/pagination`, {

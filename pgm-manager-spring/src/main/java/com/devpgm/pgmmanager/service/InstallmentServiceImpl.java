@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -40,7 +41,8 @@ public class InstallmentServiceImpl implements InstallmentService {
     @Override
     public InstallmentPageDTO installmentsPagination(int page, int size) {
         Page<Installment> pageInstallments =
-                installmentRepository.findAll(PageRequest.of(page, size));
+                installmentRepository.findAll(PageRequest.of(
+                    page, size, Sort.by(Sort.Direction.DESC, "createdAt")));
         List<RespAllInstDTO> installments =
                 pageInstallments.get().map(installmentMapper::toRespAllInstDTO).toList();
         return new InstallmentPageDTO(

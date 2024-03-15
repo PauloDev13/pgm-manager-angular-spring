@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
+import { SecretaryModel } from '../../customer/model/secretary,model';
 import { InstallmentStore } from '../../installment/store/installment.store';
 import { BADGES, SECRETARIES } from '../data/secretaries';
 
@@ -9,7 +10,7 @@ import { BADGES, SECRETARIES } from '../data/secretaries';
 })
 export class UtilService {
   // Variables
-  public readonly listSecretaries = SECRETARIES;
+  public readonly listSecretaries: SecretaryModel[] = SECRETARIES;
   public availableBadges: string[] = [];
   protected readonly listBadges = BADGES;
   protected readonly baseUrlApi = 'http://localhost:8081/api';

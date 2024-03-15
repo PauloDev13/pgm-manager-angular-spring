@@ -40,9 +40,6 @@ export class AppComponent {
   currentScreen = '';
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  toggle() {
-    this.sidenav.toggle().then();
-  }
   computeSize(size: string) {
     this.currentScreen = size;
   }

@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 import { SearchComponent } from '../../../core/components/search/search.component';
 import { InstallmentStore } from '../../../installment/store/installment.store';
-import { TSearchQuery } from '../../../shared/types/shared.type';
 import { CustomerListModel } from '../../model/customer-list.model';
 import { CustomerStore } from '../../store/custumer.store';
 
@@ -52,9 +51,5 @@ export class CustomerListComponent implements OnInit {
     } else {
       this.router.navigate(['/installment'], { state: customer }).then();
     }
-  }
-
-  updateSearch(criteria: Partial<TSearchQuery>) {
-    this.customerStore.updateFilter(criteria);
   }
 }

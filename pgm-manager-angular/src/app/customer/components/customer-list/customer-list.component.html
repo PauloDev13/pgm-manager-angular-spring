@@ -45,6 +45,7 @@
       </tbody>
     </table>
     <mat-paginator
+      class="mat-mdc-paginator"
       (page)="refresh($event)"
       [length]="customerStore.totalElements()"
       [pageIndex]="pageIndex"

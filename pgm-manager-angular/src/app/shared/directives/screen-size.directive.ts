@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { ScreenSizeSignal } from '../signals/screen-size.signal';
-let window: any;
+
 @Directive({
   selector: '[appScreenSize]',
   standalone: true,
@@ -21,13 +21,6 @@ export class ScreenSizeDirective {
     private el: ElementRef,
     private screenSizeSignal: ScreenSizeSignal,
   ) {}
-
-  ngAfterViewInit() {
-    this.setScreenSize();
-    this.renderer.listen('window', 'resize', event => {
-      this.setScreenSize();
-    });
-  }
 
   private setScreenSize() {
     const width = this.el.nativeElement.ownerDocument.defaultView.innerWidth;
