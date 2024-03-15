@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { CustomerModel } from '../../../customer/model/customer.model';
 import { FormUtilsService } from '../../../shared/form/form-utils.service';
@@ -23,7 +23,7 @@ type TNewInstallment = {
 @Component({
   selector: 'app-installment-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './installment-form.component.html',
   styleUrl: './installment-form.component.scss',
 })

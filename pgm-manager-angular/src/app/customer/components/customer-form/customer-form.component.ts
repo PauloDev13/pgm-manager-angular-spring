@@ -5,21 +5,21 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
-import { FormUtilsService } from '../shared/form/form-utils.service';
-import { UtilService } from '../shared/service/util.service';
-import { CustomAsynchronousValidationService } from '../shared/utils/custom-asynchronous- validation.service';
-import { CustomerStore } from './store/custumer.store';
+import { FormUtilsService } from '../../../shared/form/form-utils.service';
+import { UtilService } from '../../../shared/service/util.service';
+import { CustomAsynchronousValidationService } from '../../../shared/utils/custom-asynchronous- validation.service';
+import { CustomerStore } from '../../store/custumer.store';
 
 @Component({
   selector: 'app-customer',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe],
-  templateUrl: './customer.component.html',
-  styleUrl: './customer.component.scss',
+  imports: [ReactiveFormsModule, JsonPipe, RouterLink],
+  templateUrl: './customer-form.component.html',
+  styleUrl: './customer-form.component.scss',
 })
-export default class CustomerComponent {
+export default class CustomerFormComponent {
   // injectables
   protected readonly formUtilService = inject(FormUtilsService);
   protected readonly asyncValidationService = inject(
