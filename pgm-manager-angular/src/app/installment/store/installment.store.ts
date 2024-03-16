@@ -9,7 +9,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 
 import { TPageAndSize, TSearchQuery } from '../../shared/types/shared.type';
 import { ReqCreateInstallmentDTO } from '../dto/req-create-installmentDTO';
@@ -29,6 +29,7 @@ const initialInstallmentStoreState: TInstallmentState = {
     page: 0,
     size: 10,
   },
+  loaded: true,
   totalElements: 0,
   err: null,
 };
@@ -46,20 +47,25 @@ export const InstallmentStore = signalStore(
       loadSearchPagination: rxMethod<Partial<TSearchQuery>>(
         pipe(
           debounceTime(300),
+          tap(() => patchState(store, { loaded: true })),
+          debounceTime(300),
           distinctUntilChanged(),
           switchMap(criteria =>
             installmentService.loadSearchPagination(criteria),
           ),
           tapResponse({
             next: ({ installments, totalElements }) => {
+              patchState(store, { loaded: true });
               patchState(store, {
                 listInstallments: installments,
                 totalElements,
+                loaded: false,
               });
             },
             error: (err: HttpErrorResponse) =>
               patchState(store, {
                 err: 'Erro ao buscar dados. Code: ' + err.status,
+                loaded: false,
               }),
           }),
         ),

@@ -1,3 +1,12 @@
+<!--  <ngx-ui-loader-->
+<!--    fgsColor="#ffffff"-->
+<!--    fgsType="ball-spin-fade-rotating"-->
+<!--    overlayColor="rgba(40, 40, 40, 0.8)"-->
+<!--    text="Carregando..."-->
+<!--    textColor="#ffffff"-->
+<!--    textPosition="center-center">-->
+<!--  </ngx-ui-loader>-->
+
 <div class="relative min-h-screen bg-gray-100 dark:bg-gray-800">
   <!-- Navbar -->
   <app-header/>
@@ -13,12 +22,20 @@
       <div class="flex flex-col gap-5 justify-center m-5">
         <button class="w-full" mat-flat-button routerLink="/login">Entrar</button>
         <button class="w-full" mat-flat-button routerLink="/customer">Novo Cliente</button>
-        <button class="w-full" mat-flat-button routerLink="/customers">Clientes</button>
-        <button class="w-full" mat-flat-button routerLink="/installments">Atendimentos</button>
+        <button
+          (click)="updateFilterCustomer({ query: '', page: 0, size: 10 })"
+          class="w-full"
+          mat-flat-button>
+          Clientes
+        </button>
+        <button
+          (click)="updateFilterInstallment({ query: '', page: 0, size: 10 })"
+          class="w-full"
+          mat-flat-button>Atendimentos
+        </button>
         <button class="w-full" mat-flat-button routerLink="/home">Sair</button>
       </div>
     </mat-sidenav>
-
     <mat-sidenav-content class="bg-gray-800">
       <router-outlet/>
     </mat-sidenav-content>

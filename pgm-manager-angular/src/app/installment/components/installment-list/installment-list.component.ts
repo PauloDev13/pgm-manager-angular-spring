@@ -3,13 +3,14 @@ import { Component, inject } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { SearchComponent } from '../../../core/components/search/search.component';
+import { LoaderSpinnerComponent } from '../../../shared/components/loader-spinner/loader-spinner.component';
 import { InstallmentListModel } from '../../model/installment-list.model';
 import { InstallmentStore } from '../../store/installment.store';
 
 @Component({
   selector: 'app-installment-list',
   standalone: true,
-  imports: [DatePipe, MatPaginator, SearchComponent],
+  imports: [DatePipe, MatPaginator, SearchComponent, LoaderSpinnerComponent],
   templateUrl: './installment-list.component.html',
   styleUrl: './installment-list.component.scss',
 })
@@ -27,7 +28,7 @@ export default class InstallmentListComponent {
       pageSize: this.pageSize,
     },
   ) {
-    this.installmentStore.loadAllPagination({
+    this.installmentStore.loadSearchPagination({
       page: pageEvent.pageIndex,
       size: pageEvent.pageSize,
     });

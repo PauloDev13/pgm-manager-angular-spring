@@ -45,7 +45,8 @@ public class Customer {
   @Column(name = "updated_at")
   private Date updatedAt;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+              orphanRemoval = true, mappedBy = "customer")
   private List<Installment> installments = new ArrayList<>();
 
   public void add(Installment installment) {

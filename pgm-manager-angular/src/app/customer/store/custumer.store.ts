@@ -10,7 +10,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 
 import { InstallmentStore } from '../../installment/store/installment.store';
 import { TSearchQuery } from '../../shared/types/shared.type';
@@ -30,6 +30,7 @@ const initialCustomerStoreState: TCustomerStoreState = {
     page: 0,
     size: 10,
   },
+  loaded: true,
   totalElements: 0,
   err: null,
 };
@@ -63,8 +64,6 @@ export const CustomerStore = signalStore(
                     listCustomers: updatedCustomer,
                     err: null,
                   });
-                  // atualiza lista de installments
-                  installmentStore.loadAllPagination(store.query);
                 },
                 error: (err: HttpErrorResponse) => {
                   if (err.error === 'Duplicate constraint') {
@@ -76,10 +75,16 @@ export const CustomerStore = signalStore(
                   } else {
                     patchState(store, {
                       err: err.error,
-                      customer: null,
                     });
                   }
                 },
+                finalize: () =>
+                  // atualiza lista de atendimentos
+                  installmentStore.updateFilter({
+                    query: '',
+                    page: 0,
+                    size: 10,
+                  }),
               }),
             );
           }),
@@ -87,6 +92,8 @@ export const CustomerStore = signalStore(
       ),
       loadSearchPagination: rxMethod<Partial<TSearchQuery>>(
         pipe(
+          debounceTime(300),
+          tap(() => patchState(store, { loaded: true })),
           debounceTime(300),
           distinctUntilChanged(),
           switchMap(criteria => {
@@ -96,12 +103,14 @@ export const CustomerStore = signalStore(
             next: ({ customers, totalElements }) => {
               patchState(store, {
                 listCustomers: customers,
+                loaded: false,
                 totalElements,
               });
             },
             error: (errorResp: HttpErrorResponse) =>
               patchState(store, {
                 err: `Erro ao buscar dados. CODE: ${errorResp.status}`,
+                loaded: false,
               }),
           }),
         ),

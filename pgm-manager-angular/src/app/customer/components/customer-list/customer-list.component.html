@@ -1,6 +1,5 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mx-5">
-  <app-search option="customer" />
-  @if (customerStore.listCustomers().length) {
+    <app-search option="customer"/>
     <table
       class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <caption
@@ -21,43 +20,43 @@
         </th>
       </tr>
       </thead>
-      <tbody>
-        @for (customer of customerStore.listCustomers(); track customer.id) {
-          <tr
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">
-              {{ customer.name }}
-            </th>
-            <td class="px-4 py-1.5">
-              {{ customer.document }}
-            </td>
-            <td class="px-4 py-1.5 text-right">
-              <button class="font-medium text-red-600 dark:text-red-500 hover:underline">
-                Excluir
-              </button>
-              <button (click)="onAddInstallment(customer)"
-                      class="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-10">
-                Adicionar atendimento
-              </button>
-            </td>
-          </tr>
-        }
-      </tbody>
+      @if (customerStore.loaded()) {
+        <app-loader-spinner/>
+      } @else {
+        <tbody>
+          @for (customer of customerStore.listCustomers(); track customer.id) {
+            <tr
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <th class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">
+                {{ customer.name }}
+              </th>
+              <td class="px-4 py-1.5">
+                {{ customer.document }}
+              </td>
+              <td class="px-4 py-1.5 text-right">
+                <button class="font-medium text-red-600 dark:text-red-500 hover:underline">
+                  Excluir
+                </button>
+                <button (click)="onAddInstallment(customer)"
+                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-10">
+                  Adicionar atendimento
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <td class="p-3 text-white font-semibold">Nenhum cadastro encontrado!</td>
+          }
+        </tbody>
+      }
     </table>
     <mat-paginator
-      class="mat-mdc-paginator"
       (page)="refresh($event)"
       [length]="customerStore.totalElements()"
       [pageIndex]="pageIndex"
       [pageSizeOptions]="[1, 5, 10]"
       [pageSize]="pageSize"
       aria-label="Selecione a página de atendimento"
+      class="mat-mdc-paginator"
       showFirstLastButtons="true">
     </mat-paginator>
-  } @else {
-    <caption
-      class="flex justify-center mt-5 p-5 text-lg font-semibold rounded-lg dark:text-white dark:bg-gray-700">
-      Nenhum cadastro encontrado!
-    </caption>
-  }
-</div>
+  </div>

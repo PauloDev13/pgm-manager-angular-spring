@@ -7,6 +7,7 @@ export type TCustomerStoreState = {
   listCustomers: CustomerListModel[];
   query: TPageAndSize;
   searchQuery: Partial<TSearchQuery>;
+  loaded: boolean;
   totalElements: number;
   err: string | null;
 };

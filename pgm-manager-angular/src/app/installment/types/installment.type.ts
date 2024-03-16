@@ -7,6 +7,7 @@ export type TInstallmentState = {
   listInstallments: InstallmentListModel[];
   query: TPageAndSize;
   searchQuery: Partial<TSearchQuery>;
+  loaded: boolean;
   totalElements: number;
   err: string | null;
 };

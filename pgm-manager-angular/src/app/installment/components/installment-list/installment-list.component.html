@@ -1,10 +1,9 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mx-5">
   <app-search option="installment"/>
-
-  @if (installmentStore.listInstallments().length) {
   <table
     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-    <caption class="p-5 text-lg font-semibold text-center rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+    <caption
+      class="p-5 text-lg font-semibold text-center rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
       Lista de atendimentos
     </caption>
     <thead
@@ -36,6 +35,10 @@
       </th>
     </tr>
     </thead>
+    @if (installmentStore.loaded()) {
+      <app-loader-spinner/>
+    } @else {
+
     <tbody>
       @for (installment of installmentStore.listInstallments(); track installment.id) {
         <tr
@@ -78,25 +81,21 @@
             </button>
           </td>
         </tr>
+      } @empty {
+        <td class="p-3 text-white font-semibold">Nenhum cadastro encontrado!</td>
       }
     </tbody>
+    }
   </table>
   <mat-paginator
-    class="mat-mdc-paginator"
     (page)="refresh($event)"
     [length]="installmentStore.totalElements()"
     [pageIndex]="pageIndex"
     [pageSizeOptions]="[1, 5, 10]"
     [pageSize]="pageSize"
     aria-label="Selecione a página de atendimento"
+    class="mat-mdc-paginator"
     showFirstLastButtons="true">
   </mat-paginator>
-
-  } @else {
-  <caption
-    class="flex justify-center mt-5 p-5 text-lg font-semibold rounded-lg dark:text-white dark:bg-gray-700">
-    Nenhum cadastro encontrado!
-  </caption>
-
-  }
 </div>
+

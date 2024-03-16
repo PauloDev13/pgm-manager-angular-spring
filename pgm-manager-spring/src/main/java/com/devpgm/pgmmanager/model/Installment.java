@@ -49,7 +49,7 @@ public class Installment {
   private Date updatedAt;
 
   @NotNull(message = "O ID do cliente é obrigatório")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(optional = false)
   @JoinColumn(name = "customer_id", nullable = false)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Customer customer;
