@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { InstallmentStore } from '../../../installment/store/installment.store';
 import { FormUtilsService } from '../../../shared/form/form-utils.service';
 import { UtilService } from '../../../shared/service/util.service';
 import { CustomAsynchronousValidationService } from '../../../shared/utils/custom-asynchronous- validation.service';
@@ -28,6 +29,7 @@ export default class CustomerFormComponent {
   protected readonly fb = inject(NonNullableFormBuilder);
   protected readonly utilService = inject(UtilService);
   protected readonly customerStore = inject(CustomerStore);
+  protected readonly installmentStore = inject(InstallmentStore);
   // Variables
   // form customer
   protected formCustomer = this.fb.group({
@@ -58,6 +60,12 @@ export default class CustomerFormComponent {
       this.customerStore.create({ ...customer, installment });
 
       this.route.navigate(['/installments']).then(() => {
+        // atualiza a lista de atendimentos
+        this.installmentStore.loadSearchPagination({
+          query: '',
+          page: 0,
+          size: 10,
+        });
         console.log(`Usuário ${customer.name} cadastrado(a) com sucesso`);
       });
     }

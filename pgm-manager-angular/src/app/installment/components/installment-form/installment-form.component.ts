@@ -61,11 +61,15 @@ export class InstallmentFormComponent implements OnInit {
         },
       };
       this.installmentStore.createInstallmentByCustomer({ newInstallment });
-      this.router
-        .navigate(['/installments'])
-        .then(() =>
-          console.log(`Atendimento criado para: (${this.customerInfo.name}`),
-        );
+      this.router.navigate(['/installments']).then(() => {
+        // atualiza a lista de atendimentos
+        this.installmentStore.loadSearchPagination({
+          query: '',
+          page: 0,
+          size: 10,
+        });
+        console.log(`Atendimento criado para: (${this.customerInfo.name}`);
+      });
     }
     this.formInstallment.markAllAsTouched();
   }

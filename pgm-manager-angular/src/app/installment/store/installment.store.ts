@@ -29,7 +29,7 @@ const initialInstallmentStoreState: TInstallmentState = {
     page: 0,
     size: 10,
   },
-  loaded: true,
+  loaded: false,
   totalElements: 0,
   err: null,
 };
@@ -42,13 +42,12 @@ export const InstallmentStore = signalStore(
   withMethods(
     (store, installmentService = inject(InstallmentService)) => ({
       updateFilter(criteria: Partial<TSearchQuery>) {
-        patchState(store, { searchQuery: criteria });
+        patchState(store, { loaded: true, searchQuery: criteria });
       },
       loadSearchPagination: rxMethod<Partial<TSearchQuery>>(
         pipe(
           debounceTime(300),
           tap(() => patchState(store, { loaded: true })),
-          debounceTime(300),
           distinctUntilChanged(),
           switchMap(criteria =>
             installmentService.loadSearchPagination(criteria),
@@ -127,6 +126,7 @@ export const InstallmentStore = signalStore(
         newInstallment: TNewInstallment;
       }>(
         pipe(
+          tap(() => patchState(store, { loaded: true })),
           switchMap(({ newInstallment }) =>
             installmentService.createInstallmentByCustomer(newInstallment),
           ),
@@ -139,12 +139,14 @@ export const InstallmentStore = signalStore(
               patchState(store, {
                 installment,
                 listInstallments: installmentsUpdated,
+                loaded: false,
                 err: null,
               });
             },
             error: (errorResp: HttpErrorResponse) =>
               patchState(store, {
                 err: `Erro ao criar atendimento. CODE: ${errorResp.status}`,
+                loaded: false,
               }),
           }),
         ),
@@ -157,3 +159,14 @@ export const InstallmentStore = signalStore(
     },
   }),
 ); //final rotina
+
+function updateFilter(arg0: {
+  query: string;
+  page: number;
+  size: number;
+}): void {
+  throw new Error('Function not implemented.');
+}
+function loadSearchPagination() {
+  throw new Error('Function not implemented.');
+}

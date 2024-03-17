@@ -1,17 +1,17 @@
 .lds-ring {
   display: inline-block;
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 90px;
+  height: 90px;
 }
 .lds-ring div {
   box-sizing: border-box;
   display: block;
   position: absolute;
-  width: 44px;
-  height: 44px;
+  width: 84px;
+  height: 84px;
   margin: 8px;
-  border: 8px solid #e7e7e7;
+  border: 6px solid #e7e7e7;
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #e7e7e7 transparent transparent transparent;
@@ -33,3 +33,4 @@
     transform: rotate(360deg);
   }
 }
+

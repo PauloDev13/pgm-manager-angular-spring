@@ -1,17 +1,10 @@
-<!--  <ngx-ui-loader-->
-<!--    fgsColor="#ffffff"-->
-<!--    fgsType="ball-spin-fade-rotating"-->
-<!--    overlayColor="rgba(40, 40, 40, 0.8)"-->
-<!--    text="Carregando..."-->
-<!--    textColor="#ffffff"-->
-<!--    textPosition="center-center">-->
-<!--  </ngx-ui-loader>-->
-
+@if (customerStore.loaded() || installmentStore.loaded()) {
+  <app-loader-spinner/>
+}
 <div class="relative min-h-screen bg-gray-100 dark:bg-gray-800">
   <!-- Navbar -->
   <app-header/>
   <mat-sidenav-container class="dark:bg-gray-800">
-
     <mat-sidenav
       #sidenav (screenChange)="computeSize($event)"
       [mode]="screenSignal.currenScreenSize() === 'small' ? 'over': 'side'"

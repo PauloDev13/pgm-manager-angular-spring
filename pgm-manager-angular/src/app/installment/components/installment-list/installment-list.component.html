@@ -35,10 +35,6 @@
       </th>
     </tr>
     </thead>
-    @if (installmentStore.loaded()) {
-      <app-loader-spinner/>
-    } @else {
-
     <tbody>
       @for (installment of installmentStore.listInstallments(); track installment.id) {
         <tr
@@ -85,7 +81,6 @@
         <td class="p-3 text-white font-semibold">Nenhum cadastro encontrado!</td>
       }
     </tbody>
-    }
   </table>
   <mat-paginator
     (page)="refresh($event)"

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-loader-spinner',
