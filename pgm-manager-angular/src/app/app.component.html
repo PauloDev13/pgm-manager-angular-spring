@@ -16,13 +16,13 @@
         <button class="w-full" mat-flat-button routerLink="/login">Entrar</button>
         <button class="w-full" mat-flat-button routerLink="/customer">Novo Cliente</button>
         <button
-          (click)="updateFilterCustomer({ query: '', page: 0, size: 10 })"
+          (click)="updateFilterCustomer({ query: '', status: false, page: 0, size: 10 })"
           class="w-full"
           mat-flat-button>
           Clientes
         </button>
         <button
-          (click)="updateFilterInstallment({ query: '', page: 0, size: 10 })"
+          (click)="updateFilterInstallment({ query: '', status: false, page: 0, size: 10 })"
           class="w-full"
           mat-flat-button>Atendimentos
         </button>

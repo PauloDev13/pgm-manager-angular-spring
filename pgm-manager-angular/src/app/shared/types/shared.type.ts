@@ -1,5 +1,6 @@
 export type TSearchQuery = {
   query: string;
+  status: boolean;
   page: number;
   size: number;
 };

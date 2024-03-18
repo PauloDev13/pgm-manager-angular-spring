@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
+  withComputed,
   withHooks,
   withMethods,
   withState,
@@ -15,17 +16,19 @@ import { TPageAndSize, TSearchQuery } from '../../shared/types/shared.type';
 import { ReqCreateInstallmentDTO } from '../dto/req-create-installmentDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
 import { InstallmentService } from '../service/installment.service';
-import { TInstallmentState, TNewInstallment } from '../types/installment.type';
+import {
+  TInstallmentFilter,
+  TInstallmentState,
+  TNewInstallment,
+} from '../types/installment.type';
 
 const initialInstallmentStoreState: TInstallmentState = {
   installment: {} as ReqCreateInstallmentDTO,
   listInstallments: [] as InstallmentListModel[],
-  query: {
-    page: 0,
-    size: 10,
-  },
+  filter: 'pending',
   searchQuery: {
     query: '',
+    status: false,
     page: 0,
     size: 10,
   },
@@ -42,7 +45,10 @@ export const InstallmentStore = signalStore(
   withMethods(
     (store, installmentService = inject(InstallmentService)) => ({
       updateFilter(criteria: Partial<TSearchQuery>) {
-        patchState(store, { loaded: true, searchQuery: criteria });
+        patchState(store, { searchQuery: criteria });
+      },
+      updateInstallmentFilter(filter: TInstallmentFilter) {
+        patchState(store, { filter });
       },
       loadSearchPagination: rxMethod<Partial<TSearchQuery>>(
         pipe(
@@ -153,20 +159,21 @@ export const InstallmentStore = signalStore(
       ), // fim create installment
     }), //fim methods
   ), //final methods
+  withComputed(store => ({
+    // código não usado - serve como exemplo
+    filteredInstallments: computed(() => {
+      const installments = store.listInstallments();
+      switch (store.filter()) {
+        case 'pending':
+          return installments.filter(resp => !resp.finished);
+        case 'finished':
+          return installments.filter(resp => resp.finished);
+      }
+    }),
+  })),
   withHooks({
     onInit({ loadSearchPagination, searchQuery }) {
       loadSearchPagination(searchQuery);
     },
   }),
 ); //final rotina
-
-function updateFilter(arg0: {
-  query: string;
-  page: number;
-  size: number;
-}): void {
-  throw new Error('Function not implemented.');
-}
-function loadSearchPagination() {
-  throw new Error('Function not implemented.');
-}

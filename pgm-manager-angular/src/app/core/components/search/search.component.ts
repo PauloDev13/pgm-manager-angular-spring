@@ -1,7 +1,5 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
-import { CustomerStore } from '../../../customer/store/custumer.store';
-import { InstallmentStore } from '../../../installment/store/installment.store';
 import { TSearchQuery } from '../../../shared/types/shared.type';
 
 @Component({
@@ -12,15 +10,9 @@ import { TSearchQuery } from '../../../shared/types/shared.type';
   styleUrl: './search.component.scss',
 })
 export class SearchComponent {
-  option = input.required<string>();
-  protected readonly customerStore = inject(CustomerStore);
-  protected readonly installmentStore = inject(InstallmentStore);
+  @Output() query: EventEmitter<string> = new EventEmitter<string>();
 
   updateFilter(criteria: Partial<TSearchQuery>) {
-    if (this.option() === 'installment') {
-      this.installmentStore.loadSearchPagination(criteria);
-    } else {
-      this.customerStore.loadSearchPagination(criteria);
-    }
+    this.query.emit(criteria.query);
   }
 }

@@ -15,7 +15,7 @@ public interface InstallmentRepository extends JpaRepository<Installment, Long> 
    Optional<Installment> findByBadgeAndSecretaryAndFinishedIsFalse(String badge, String secretary);
 
    @Query("SELECT i FROM Installment i INNER JOIN Customer c ON c.id = i.customer.id " +
-           "WHERE lower(c.name) LIKE concat('%', lower(:query), '%') OR " +
-           "c.document LIKE concat('%', lower(:query), '%') ORDER BY i.createdAt DESC")
-   Page<Installment> searchPagination(String query, Pageable pageable);
+           "WHERE lower(c.name) LIKE concat('%', lower(:query), '%') AND i.finished=:status OR c.document " +
+            "LIKE concat('%', lower(:query), '%') AND i.finished=:status ORDER BY i.createdAt DESC")
+   Page<Installment> searchPagination(String query, Boolean status, Pageable pageable);
 }

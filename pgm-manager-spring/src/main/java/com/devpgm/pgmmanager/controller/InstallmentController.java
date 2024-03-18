@@ -39,10 +39,12 @@ public class InstallmentController {
   @GetMapping("/search")
   public InstallmentPageDTO installmentsSearchPagination(
           @RequestParam(defaultValue = "") String query,
+          @RequestParam(defaultValue = "false") Boolean status,
           @RequestParam(defaultValue = "0") @PositiveOrZero int page,
           @RequestParam(defaultValue = "10") @Positive @Max(100) int size)
   {
-    return installmentService.installmentsSearchPagination(query, page, size);
+
+    return installmentService.installmentsSearchPagination(query, status, page, size);
   }
 
   @GetMapping("/{id}")

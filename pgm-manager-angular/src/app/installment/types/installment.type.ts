@@ -1,11 +1,11 @@
-import { TPageAndSize, TSearchQuery } from '../../shared/types/shared.type';
+import { TSearchQuery } from '../../shared/types/shared.type';
 import { ReqCreateInstallmentDTO } from '../dto/req-create-installmentDTO';
 import { InstallmentListModel } from '../model/installment-list.model';
 
 export type TInstallmentState = {
   installment: ReqCreateInstallmentDTO;
   listInstallments: InstallmentListModel[];
-  query: TPageAndSize;
+  filter: TInstallmentFilter;
   searchQuery: Partial<TSearchQuery>;
   loaded: boolean;
   totalElements: number;
@@ -19,3 +19,5 @@ export type TNewInstallment = {
     id: number;
   };
 };
+
+export type TInstallmentFilter = 'finished' | 'pending';

@@ -8,6 +8,7 @@ import com.devpgm.pgmmanager.repository.CustomerRepository;
 import com.devpgm.pgmmanager.repository.InstallmentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InstallmentServiceImpl implements InstallmentService {
@@ -52,10 +54,14 @@ public class InstallmentServiceImpl implements InstallmentService {
     }
 
     @Override
-    public InstallmentPageDTO installmentsSearchPagination(String query, int page, int size) {
-      Page<Installment> pageInstallments = installmentRepository.searchPagination(query, PageRequest.of(page, size));
+    public InstallmentPageDTO installmentsSearchPagination(String query, Boolean status, int page, int size) {
+      Page<Installment> pageInstallments = installmentRepository.searchPagination(
+          query, status, PageRequest.of(page, size));
         List<RespAllInstDTO> installments =
                 pageInstallments.get().map(installmentMapper::toRespAllInstDTO).toList();
+
+      log.info("Search installment by Customer params QUERY: {}, STATUS: {}, PAGE {}, SIZE {}", query, status, page, size);
+
         return new InstallmentPageDTO(
                 installments,
                 pageInstallments.getTotalElements(),

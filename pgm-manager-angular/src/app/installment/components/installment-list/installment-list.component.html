@@ -1,5 +1,11 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mx-5">
-  <app-search option="installment"/>
+  <div class="flex items-center">
+    <app-search (query)="onSearch($event)" class="mr-2"/>
+    <mat-button-toggle-group #filter (change)="onFilterInstallments($event)">
+      <mat-button-toggle value="pending">Pendente</mat-button-toggle>
+      <mat-button-toggle value="finished">Finalizado</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
   <table
     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
     <caption
