@@ -43,7 +43,7 @@ export const CustomerStore = signalStore(
   })),
   withMethods((store, customerService = inject(CustomerService)) => ({
     updateFilter(criteria: Partial<TSearchQuery>) {
-      patchState(store, { loaded: true, searchQuery: criteria });
+      patchState(store, { searchQuery: criteria });
     },
     create: rxMethod<ReqCreateCustomerDTO>(
       pipe(

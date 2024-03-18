@@ -1,5 +1,5 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mx-5">
-    <app-search option="customer"/>
+    <app-search (query)="onSearch($event)" />
     <table
       class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <caption

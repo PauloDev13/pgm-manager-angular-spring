@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 import { TSearchQuery } from '../../../shared/types/shared.type';
 
@@ -10,9 +10,9 @@ import { TSearchQuery } from '../../../shared/types/shared.type';
   styleUrl: './search.component.scss',
 })
 export class SearchComponent {
-  @Output() query: EventEmitter<string> = new EventEmitter<string>();
+  query = output<string>();
 
   updateFilter(criteria: Partial<TSearchQuery>) {
-    this.query.emit(criteria.query);
+    this.query.emit(criteria.query!);
   }
 }

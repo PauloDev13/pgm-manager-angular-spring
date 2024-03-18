@@ -55,4 +55,12 @@ export class CustomerListComponent {
       this.router.navigate(['/installment'], { state: customer }).then();
     }
   }
+
+  onSearch(query: string) {
+    this.customerStore.updateFilter({
+      query,
+      page: this.pageIndex,
+      size: this.pageSize,
+    });
+  }
 }

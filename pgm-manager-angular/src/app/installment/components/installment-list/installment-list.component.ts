@@ -35,12 +35,13 @@ export default class InstallmentListComponent {
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
   private filter = viewChild.required(MatButtonToggleGroup);
-  private querySearch!: TSearchQuery;
+  private querySearch!: Partial<TSearchQuery>;
 
   constructor() {
     effect(() => {
       const filter = this.filter();
       filter.value = this.installmentStore.filter();
+      // this.querySearch = this.installmentStore.searchQuery();
     });
   }
 
@@ -113,7 +114,7 @@ export default class InstallmentListComponent {
     }
   }
 
-  private updateFilter(querySearch: TSearchQuery) {
+  private updateFilter(querySearch: Partial<TSearchQuery>) {
     this.installmentStore.updateFilter(querySearch);
   }
 }
