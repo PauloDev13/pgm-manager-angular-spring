@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { CustomerModel } from '../../../customer/model/customer.model';
 import { FormUtilsService } from '../../../shared/form/form-utils.service';
+import { NotifierService } from '../../../shared/service/notifier.service';
 import { UtilService } from '../../../shared/service/util.service';
 import { InstallmentStore } from '../../store/installment.store';
 
@@ -34,6 +35,7 @@ export class InstallmentFormComponent implements OnInit {
   protected customerInfo!: CustomerModel;
   // Injectables
   protected readonly formUtilService = inject(FormUtilsService);
+  protected readonly notifierService = inject(NotifierService);
   protected readonly utilService = inject(UtilService);
   protected readonly router = inject(Router);
   protected readonly fb = inject(NonNullableFormBuilder);
@@ -68,6 +70,11 @@ export class InstallmentFormComponent implements OnInit {
           page: 0,
           size: 10,
         });
+        this.notifierService.showNotification(
+          `Atendimento criado para: (${this.customerInfo.name}`,
+          'Ok',
+          'success-snackbar',
+        );
         console.log(`Atendimento criado para: (${this.customerInfo.name}`);
       });
     }

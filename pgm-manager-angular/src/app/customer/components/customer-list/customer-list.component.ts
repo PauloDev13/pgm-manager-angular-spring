@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { SearchComponent } from '../../../core/components/search/search.component';
 import { InstallmentStore } from '../../../installment/store/installment.store';
 import { LoaderSpinnerComponent } from '../../../shared/components/loader-spinner/loader-spinner.component';
+import { NotifierService } from '../../../shared/service/notifier.service';
 import { CustomerListModel } from '../../model/customer-list.model';
 import { CustomerStore } from '../../store/custumer.store';
 
@@ -27,6 +28,8 @@ export class CustomerListComponent {
   //Stores
   protected readonly customerStore = inject(CustomerStore);
   protected readonly installmentStore = inject(InstallmentStore);
+  // Services
+  protected readonly notifierService = inject(NotifierService);
   protected readonly router = inject(Router);
   // Variables
   protected pageIndex: number = 0;
@@ -50,7 +53,11 @@ export class CustomerListComponent {
       .some(resp => customer.id === resp.customer.id && !resp.finished);
 
     if (result) {
-      alert(`(${customer.name.toUpperCase()}) ESTÁ EM ATENDIMENTO`);
+      this.notifierService.showNotification(
+        `(${customer.name.toUpperCase()}) ESTÁ EM ATENDIMENTO.`,
+        'Ok',
+        'success-snackbar',
+      );
     } else {
       this.router.navigate(['/installment'], { state: customer }).then();
     }
