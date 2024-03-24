@@ -1,6 +1,9 @@
 package com.devpgm.pgmmanager.controller;
 
-import com.devpgm.pgmmanager.dto.installment.*;
+import com.devpgm.pgmmanager.dto.InstallmentDefaultDTO;
+import com.devpgm.pgmmanager.dto.installment.PageInstallmentDTO;
+import com.devpgm.pgmmanager.dto.installment.ReqInstallmentCreateDTO;
+import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
 import com.devpgm.pgmmanager.service.InstallmentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -24,12 +27,12 @@ public class InstallmentController {
   private final InstallmentService installmentService;
 
   @GetMapping
-  public List<RespAllInstDTO> installments() {
+  public List<InstallmentDefaultDTO> installments() {
     return installmentService.installments();
   }
 
   @GetMapping("/pagination")
-  public InstallmentPageDTO installmentsPagination(
+  public PageInstallmentDTO installmentsPagination(
           @RequestParam(defaultValue = "0") @PositiveOrZero int page,
           @RequestParam(defaultValue = "10") @Positive @Max(100) int size)
   {
@@ -37,7 +40,7 @@ public class InstallmentController {
   }
 
   @GetMapping("/search")
-  public InstallmentPageDTO installmentsSearchPagination(
+  public PageInstallmentDTO installmentsSearchPagination(
           @RequestParam(defaultValue = "") String query,
           @RequestParam(defaultValue = "false") Boolean status,
           @RequestParam(defaultValue = "0") @PositiveOrZero int page,
@@ -48,7 +51,7 @@ public class InstallmentController {
   }
 
   @GetMapping("/{id}")
-  public RespAllInstDTO getOneInstallment(@PathVariable @NotNull @Positive Long id) {
+  public InstallmentDefaultDTO getOneInstallment(@PathVariable @NotNull @Positive Long id) {
     return installmentService.findOneInstallment(id);
   }
 
@@ -72,11 +75,11 @@ public class InstallmentController {
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
-  public RespCreatInstDTO create(@RequestBody @NotNull @Valid ReqInstDTO reqInstDTO) {
-    return installmentService.create(reqInstDTO);
+  public InstallmentDefaultDTO create(@RequestBody @NotNull @Valid ReqInstallmentCreateDTO input) {
+    return installmentService.create(input);
   }
   @PutMapping("/{id}/status")
-  public RespAllInstDTO updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
+  public InstallmentDefaultDTO updateStatusAndDuration(@PathVariable @NotNull @Positive Long id) {
     return installmentService.updateStatusAndDuration(id);
   }
 

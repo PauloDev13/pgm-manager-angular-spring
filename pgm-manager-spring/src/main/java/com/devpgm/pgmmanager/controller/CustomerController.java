@@ -1,9 +1,8 @@
 package com.devpgm.pgmmanager.controller;
 
-import com.devpgm.pgmmanager.dto.CustomerDTO;
-import com.devpgm.pgmmanager.dto.customer.CustomerPageDTO;
-import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
-import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
+import com.devpgm.pgmmanager.dto.customer.PageCustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.ReqCustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.RespCustomerDTO;
 import com.devpgm.pgmmanager.service.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -27,11 +26,11 @@ public class CustomerController {
   private final CustomerService customerService;
 
   @GetMapping
-  public List<CustomerRespDTO> customers() {
+  public List<RespCustomerDTO> customers() {
     return customerService.customers();
   }
   @GetMapping("/pagination")
-  public CustomerPageDTO customersPagination(
+  public PageCustomerDTO customersPagination(
           @RequestParam(defaultValue = "0") @PositiveOrZero int page,
           @RequestParam(defaultValue = "10") @Positive @Max(100) int size
   ) {
@@ -39,7 +38,7 @@ public class CustomerController {
   }
 
   @GetMapping("/search")
-  public CustomerPageDTO customersSearchPagination(
+  public PageCustomerDTO customersSearchPagination(
           @RequestParam( defaultValue = "") String query,
           @RequestParam(defaultValue = "0")@PositiveOrZero int page,
           @RequestParam(defaultValue = "10") @Positive @Max(100) int size
@@ -53,19 +52,19 @@ public class CustomerController {
   }
 
   @GetMapping("/{id}")
-  public CustomerRespDTO findById(@PathVariable @NotNull @Positive Long id) {
+  public RespCustomerDTO findById(@PathVariable @NotNull @Positive Long id) {
     return customerService.findById(id);
   }
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
-  public CustomerDTO create(@RequestBody @NotNull @Valid CustomerReqDTO customerRequestDTO) {
+  public RespCustomerDTO create(@RequestBody @NotNull @Valid ReqCustomerDTO customerRequestDTO) {
     return customerService.create(customerRequestDTO);
   }
 
   @PutMapping("/{id}")
-  public CustomerRespDTO update(@PathVariable @NotNull @Positive Long id,
-                                @RequestBody @NotNull @Valid CustomerReqDTO customerReqDTO) {
+  public RespCustomerDTO update(@PathVariable @NotNull @Positive Long id,
+                                @RequestBody @NotNull @Valid ReqCustomerDTO customerReqDTO) {
     return customerService.update(id, customerReqDTO);
   }
 

@@ -1,9 +1,8 @@
 package com.devpgm.pgmmanager.service;
 
-import com.devpgm.pgmmanager.dto.CustomerDTO;
-import com.devpgm.pgmmanager.dto.customer.CustomerPageDTO;
-import com.devpgm.pgmmanager.dto.customer.CustomerReqDTO;
-import com.devpgm.pgmmanager.dto.customer.CustomerRespDTO;
+import com.devpgm.pgmmanager.dto.customer.PageCustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.ReqCustomerDTO;
+import com.devpgm.pgmmanager.dto.customer.RespCustomerDTO;
 import com.devpgm.pgmmanager.dto.mapper.CustomerMapper;
 import com.devpgm.pgmmanager.exception.RecordNotFoundException;
 import com.devpgm.pgmmanager.model.Customer;
@@ -26,30 +25,30 @@ public class CustomerServiceImpl implements CustomerService {
   private final CustomerMapper customerMapper;
 
   @Override
-  public List<CustomerRespDTO> customers() {
+  public List<RespCustomerDTO> customers() {
     return customerRepository.findAll()
         .stream()
-        .map(customerMapper::toDTO)
+        .map(customerMapper::toModel)
         .toList();
   }
 
   @Override
-  public CustomerPageDTO customersPagination(int page, int size) {
+  public PageCustomerDTO customersPagination(int page, int size) {
     Page<Customer> pageCustomers = customerRepository.findAll(PageRequest.of(page, size));
-    List<CustomerRespDTO> customers = pageCustomers.get().map(customerMapper::toDTO).toList();
-    return new CustomerPageDTO(
+    List<RespCustomerDTO> customers = pageCustomers.get().map(customerMapper::toModel).toList();
+    return new PageCustomerDTO(
             customers,
             pageCustomers.getTotalElements(),
             pageCustomers.getTotalPages());
   }
 
   @Override
-  public CustomerPageDTO customersSearchPagination(String query, int page, int size) {
+  public PageCustomerDTO customersSearchPagination(String query, int page, int size) {
     Page<Customer> pageCustomers = customerRepository
         .searchPagination(query, PageRequest.of(page, size));
 
-    List<CustomerRespDTO> customers = pageCustomers.get().map(customerMapper::toDTO).toList();
-    return new CustomerPageDTO(
+    List<RespCustomerDTO> customers = pageCustomers.get().map(customerMapper::toModel).toList();
+    return new PageCustomerDTO(
             customers,
             pageCustomers.getTotalElements(),
             pageCustomers.getTotalPages()
@@ -58,9 +57,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 
   @Override
-  public CustomerRespDTO findById(Long id) {
+  public RespCustomerDTO findById(Long id) {
     return customerRepository.findById(id)
-        .map(customerMapper::toDTO)
+        .map(customerMapper::toModel)
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
 
@@ -72,32 +71,32 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Transactional
   @Override
-  public CustomerDTO create(CustomerReqDTO customerReqDTO) {
-    if (customerReqDTO.installment() != null) {
+  public RespCustomerDTO create(ReqCustomerDTO customerReqDTO) {
+    if (customerReqDTO.getInstallment() != null) {
       var newCustomer = new Customer();
 
-      newCustomer.setName(customerReqDTO.name());
-      newCustomer.setDocument(customerReqDTO.document());
-      newCustomer.add(customerReqDTO.installment());
+      newCustomer.setName(customerReqDTO.getName());
+      newCustomer.setDocument(customerReqDTO.getDocument());
+      newCustomer.add(customerReqDTO.getInstallment());
 
-      return customerMapper.toCustomerDTO(customerRepository.save(newCustomer));
+      return customerMapper.toModel(customerRepository.save(newCustomer));
 
     } else {
-      return customerMapper.toCustomerDTO(
+      return customerMapper.toModel(
           customerRepository.save(customerMapper.toEntity(customerReqDTO)));
     }
   }
 
   @Transactional
   @Override
-  public CustomerRespDTO update(Long id, CustomerReqDTO customerReqDTO) {
+  public RespCustomerDTO update(Long id, ReqCustomerDTO customerReqDTO) {
     return customerRepository.findById(id)
         .map(customerFound -> {
           Customer customer = customerMapper.toEntity(customerReqDTO);
           customerFound.setName(customer.getName());
           customerFound.setDocument(customer.getDocument());
 
-          return customerMapper.toDTO(customerRepository.save(customerFound));
+          return customerMapper.toModel(customerRepository.save(customerFound));
         })
         .orElseThrow(() -> new RecordNotFoundException(id)
         );

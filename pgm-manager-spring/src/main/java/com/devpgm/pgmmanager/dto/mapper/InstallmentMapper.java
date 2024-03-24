@@ -1,42 +1,24 @@
 package com.devpgm.pgmmanager.dto.mapper;
 
-import com.devpgm.pgmmanager.dto.installment.ReqInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
+import com.devpgm.pgmmanager.dto.InstallmentDefaultDTO;
+import com.devpgm.pgmmanager.dto.installment.ReqInstallmentCreateDTO;
 import com.devpgm.pgmmanager.model.Installment;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class InstallmentMapper {
-    public RespAllInstDTO toRespAllInstDTO(Installment installment) {
-        if (installment == null) {
-            return null;
-        }
+  private final ModelMapper modelMapper;
 
-        return installment.respAllInstDTO();
+  public InstallmentMapper(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
+  }
 
-    }
+  public InstallmentDefaultDTO toModel(Installment installment) {
+    return modelMapper.map(installment, InstallmentDefaultDTO.class);
+  }
 
-    public RespCreatInstDTO toRespCreateInstDTO(Installment installment) {
-        if (installment == null) {
-            return null;
-        }
-
-        return installment.respCreatInstDTO();
-
-    }
-
-    public Installment toEntity(ReqInstDTO installmentReqDTO) {
-        if (installmentReqDTO == null) {
-            return null;
-        }
-
-        Installment installment = new Installment();
-        installment.setId(installmentReqDTO.id());
-        installment.setBadge(installmentReqDTO.badge());
-        installment.setSecretary(installmentReqDTO.secretary());
-        installment.setCustomer(installmentReqDTO.customer());
-
-        return installment;
-    }
+  public Installment toEntity(ReqInstallmentCreateDTO input) {
+    return modelMapper.map(input, Installment.class);
+  }
 }

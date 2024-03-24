@@ -1,6 +1,5 @@
 package com.devpgm.pgmmanager.model;
 
-import com.devpgm.pgmmanager.dto.InstallmentDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -57,22 +56,5 @@ public class Customer {
       installments.add(installment);
       installment.setCustomer(this);
     }
-  }
-
-  public List<InstallmentDTO> listInstallmentDTO() {
-    return installments
-        .stream()
-        .map(
-            installment ->
-                new InstallmentDTO(
-                    installment.getId(),
-                    installment.getBadge(),
-                    installment.getSecretary(),
-                    installment.isFinished(),
-                    installment.getDuration(),
-                    installment.getCreatedAt(),
-                    installment.getUpdatedAt()
-                )
-        ).toList();
   }
 }

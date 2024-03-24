@@ -1,8 +1,5 @@
 package com.devpgm.pgmmanager.model;
 
-import com.devpgm.pgmmanager.dto.CustomerDTO;
-import com.devpgm.pgmmanager.dto.installment.RespAllInstDTO;
-import com.devpgm.pgmmanager.dto.installment.RespCreatInstDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -57,36 +54,5 @@ public class Installment {
   @PrePersist
   private void setStatus() {
     finished = false;
-  }
-
-  public RespAllInstDTO respAllInstDTO() {
-    return new RespAllInstDTO(
-        id,
-        badge,
-        secretary,
-        finished,
-        duration,
-        createdAt,
-        updatedAt,
-        new CustomerDTO(
-            customer.getId(),
-            customer.getName(),
-            customer.getDocument()
-        )
-    );
-  }
-
-  public RespCreatInstDTO respCreatInstDTO() {
-    return new RespCreatInstDTO(
-        id,
-        badge,
-        secretary,
-        createdAt,
-        new CustomerDTO(
-            customer.getId(),
-            customer.getName(),
-            customer.getDocument()
-        )
-    );
   }
 }

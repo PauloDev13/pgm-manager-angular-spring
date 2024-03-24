@@ -1,6 +1,9 @@
 package com.devpgm.pgmmanager.service;
 
-import com.devpgm.pgmmanager.dto.installment.*;
+import com.devpgm.pgmmanager.dto.InstallmentDefaultDTO;
+import com.devpgm.pgmmanager.dto.installment.PageInstallmentDTO;
+import com.devpgm.pgmmanager.dto.installment.ReqInstallmentCreateDTO;
+import com.devpgm.pgmmanager.dto.installment.RespInstStatusAndCustomerDTO;
 import com.devpgm.pgmmanager.dto.mapper.InstallmentMapper;
 import com.devpgm.pgmmanager.exception.RecordNotFoundException;
 import com.devpgm.pgmmanager.model.Installment;
@@ -27,67 +30,68 @@ public class InstallmentServiceImpl implements InstallmentService {
   private final InstallmentMapper installmentMapper;
 
   @Override
-  public RespAllInstDTO findOneInstallment(Long id) {
-    return installmentMapper.toRespAllInstDTO(installmentRepository.findById(id)
+  public InstallmentDefaultDTO findOneInstallment(Long id) {
+    return installmentMapper.toModel(installmentRepository.findById(id)
         .orElseThrow(() -> new RecordNotFoundException(id)));
   }
 
   @Override
-  public List<RespAllInstDTO> installments() {
+  public List<InstallmentDefaultDTO> installments() {
     return installmentRepository.findAll()
         .stream()
-        .map(installmentMapper::toRespAllInstDTO)
+        .map(installmentMapper::toModel)
         .toList();
   }
 
-    @Override
-    public InstallmentPageDTO installmentsPagination(int page, int size) {
-        Page<Installment> pageInstallments =
-                installmentRepository.findAll(PageRequest.of(
-                    page, size, Sort.by(Sort.Direction.DESC, "createdAt")));
-        List<RespAllInstDTO> installments =
-                pageInstallments.get().map(installmentMapper::toRespAllInstDTO).toList();
-        return new InstallmentPageDTO(
-                installments,
-                pageInstallments.getTotalElements(),
-                pageInstallments.getTotalPages());
-    }
-
-    @Override
-    public InstallmentPageDTO installmentsSearchPagination(String query, Boolean status, int page, int size) {
-      Page<Installment> pageInstallments = installmentRepository.searchPagination(
-          query, status, PageRequest.of(page, size));
-        List<RespAllInstDTO> installments =
-                pageInstallments.get().map(installmentMapper::toRespAllInstDTO).toList();
-
-      log.info("Search installment by Customer params QUERY: {}, STATUS: {}, PAGE {}, SIZE {}", query, status, page, size);
-
-        return new InstallmentPageDTO(
-                installments,
-                pageInstallments.getTotalElements(),
-                pageInstallments.getTotalPages());
-    }
-
-    @Transactional
   @Override
-  public RespCreatInstDTO create(ReqInstDTO reqInstDTO) {
-    return customerRepository.findById(reqInstDTO.customer().getId())
-        .map(customer -> {
-          reqInstDTO.customer().setName(customer.getName());
-          reqInstDTO.customer().setDocument(customer.getDocument());
-          return installmentMapper.toRespCreateInstDTO(
-              installmentRepository.save(installmentMapper.toEntity(reqInstDTO)));
-        })
-        .orElseThrow(() -> new RecordNotFoundException(reqInstDTO.customer().getId()));
+  public PageInstallmentDTO installmentsPagination(int page, int size) {
+    Page<Installment> pageInstallments =
+        installmentRepository.findAll(PageRequest.of(
+            page, size, Sort.by(Sort.Direction.DESC, "createdAt")));
+    List<InstallmentDefaultDTO> installments =
+        pageInstallments.get().map(installmentMapper::toModel).toList();
+    return new PageInstallmentDTO(
+        installments,
+        pageInstallments.getTotalElements(),
+        pageInstallments.getTotalPages());
   }
 
   @Override
-  public RespAllInstDTO updateStatusAndDuration(Long id) {
+  public PageInstallmentDTO installmentsSearchPagination(String query, Boolean status, int page, int size) {
+    Page<Installment> pageInstallments = installmentRepository.searchPagination(
+        query, status, PageRequest.of(page, size));
+    List<InstallmentDefaultDTO> installments =
+        pageInstallments.get().map(installmentMapper::toModel).toList();
+
+    log.info("Search installment by Customer params QUERY: {}, STATUS: {}, PAGE {}, SIZE {}",
+        query, status, page, size);
+
+    return new PageInstallmentDTO(
+        installments,
+        pageInstallments.getTotalElements(),
+        pageInstallments.getTotalPages());
+  }
+
+  @Transactional
+  @Override
+  public InstallmentDefaultDTO create(ReqInstallmentCreateDTO input) {
+    return customerRepository.findById(input.getCustomer().getId())
+        .map(customer -> {
+          input.getCustomer().setName(customer.getName());
+          input.getCustomer().setDocument(customer.getDocument());
+          return installmentMapper.toModel(
+              installmentRepository.save(installmentMapper.toEntity(input)));
+        })
+        .orElseThrow(() -> new RecordNotFoundException(input.getCustomer().getId()));
+  }
+
+  @Override
+  public InstallmentDefaultDTO updateStatusAndDuration(Long id) {
     return installmentRepository.findById(id)
         .map(installmentFound -> {
           installmentFound.setFinished(true);
           installmentFound.setDuration((int) calculateDuration(installmentFound.getCreatedAt()));
-          return installmentMapper.toRespAllInstDTO(installmentRepository.save(installmentFound));
+          return installmentMapper.toModel(installmentRepository.save(installmentFound));
         })
         .orElseThrow(() -> new RecordNotFoundException(id));
   }
