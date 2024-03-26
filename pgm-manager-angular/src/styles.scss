@@ -40,5 +40,9 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .success-snackbar {
-   background: green;
+  border-radius: 5px;
+  //outline-offset: 2px;
+  //outline: 3px solid #785200;
+  --mdc-snackbar-container-color: #f39f06;
+  --mdc-snackbar-supporting-text-color: #fff;
 }

@@ -22,7 +22,7 @@ export class NotifierService {
       duration: 3000,
       horizontalPosition: 'end',
       verticalPosition: 'top',
-      panelClass: 'success-snackbar',
+      panelClass: cssType,
     });
   }
 }

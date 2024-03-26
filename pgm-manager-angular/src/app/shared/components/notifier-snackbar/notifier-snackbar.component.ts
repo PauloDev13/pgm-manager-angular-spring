@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
+  MatSnackBarModule,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-notifier-snackbar',
   standalone: true,
-  imports: [],
+  imports: [MatSnackBarModule],
   templateUrl: './notifier-snackbar.component.html',
   styleUrl: './notifier-snackbar.component.scss',
 })

@@ -41,7 +41,6 @@ export default class InstallmentListComponent {
     effect(() => {
       const filter = this.filter();
       filter.value = this.installmentStore.filter();
-      // this.querySearch = this.installmentStore.searchQuery();
     });
   }
 
@@ -90,8 +89,15 @@ export default class InstallmentListComponent {
     if (filter === 'pending') {
       status = !status;
     }
+    this.querySearch = {
+      query: '',
+      page: this.pageIndex,
+      size: this.pageSize,
+      status,
+    };
+    console.log('QUERY', this.querySearch);
     // atualiza o filtro que dispara a pesquisa no banco de dados
-    this.updateFilter({ ...this.querySearch, status });
+    this.updateFilter(this.querySearch);
     // atualiza o filtro para 'pending' ou 'finished'
     this.installmentStore.updateInstallmentFilter(filter);
   }

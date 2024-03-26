@@ -173,6 +173,7 @@ export const InstallmentStore = signalStore(
   })),
   withHooks({
     onInit({ loadSearchPagination, searchQuery }) {
+      console.log('QUERY 2', searchQuery());
       loadSearchPagination(searchQuery);
     },
   }),
