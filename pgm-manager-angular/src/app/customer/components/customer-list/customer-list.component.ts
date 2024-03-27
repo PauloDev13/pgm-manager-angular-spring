@@ -54,9 +54,9 @@ export class CustomerListComponent {
 
     if (result) {
       this.notifierService.showNotification(
-        `(${customer.name.toUpperCase()}) ESTÁ EM ATENDIMENTO.`,
-        'Ok',
-        'success-snackbar',
+        `${customer.name.toUpperCase()} está em atendimento.`,
+        'X',
+        'warning-snackbar',
       );
     } else {
       this.router.navigate(['/installment'], { state: customer }).then();

@@ -8,10 +8,9 @@ describe('NotifierSnackbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotifierSnackbarComponent]
-    })
-    .compileComponents();
-    
+      imports: [NotifierSnackbarComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(NotifierSnackbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -12,14 +12,14 @@ export class NotifierService {
   showNotification(
     displayMsg: string,
     labelButton: string,
-    cssType: 'success-snackbar' | 'warning' | 'error',
+    cssType: 'success-snackbar' | 'warning-snackbar' | 'error-snackbar',
   ) {
     this.snackBar.openFromComponent(NotifierSnackbarComponent, {
       data: {
         message: displayMsg,
         buttonText: labelButton,
       },
-      duration: 3000,
+      // duration: 3000,
       horizontalPosition: 'end',
       verticalPosition: 'top',
       panelClass: cssType,

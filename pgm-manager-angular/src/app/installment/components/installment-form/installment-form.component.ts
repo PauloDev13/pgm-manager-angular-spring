@@ -72,7 +72,7 @@ export class InstallmentFormComponent implements OnInit {
         });
         this.notifierService.showNotification(
           `Atendimento criado para: (${this.customerInfo.name}`,
-          'Ok',
+          'X',
           'success-snackbar',
         );
         console.log(`Atendimento criado para: (${this.customerInfo.name}`);

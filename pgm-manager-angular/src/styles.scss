@@ -41,8 +41,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .success-snackbar {
   border-radius: 5px;
-  //outline-offset: 2px;
-  //outline: 3px solid #785200;
-  --mdc-snackbar-container-color: #f39f06;
+  --mdc-snackbar-container-color: rgba(4, 116, 32, 0.97);
   --mdc-snackbar-supporting-text-color: #fff;
+  --mdc-snackbar-supporting-text-weight: semibold;
+}
+
+.warning-snackbar {
+  border-radius: 5px;
+  --mdc-snackbar-container-color: rgba(255, 165, 0, 0.97);
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mdc-snackbar-supporting-text-weight: semibold;
+}
+
+.error-snackbar {
+  border-radius: 5px;
+  --mdc-snackbar-container-color: rgba(251, 0, 0, 0.99);
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mdc-snackbar-supporting-text-weight: semibold;
+}
+
+.mat-mdc-paginator {
+  --mat-paginator-container-background-color:  rgb(55 65 81);
+  --mat-paginator-container-text-color: rgb(156 163 175);
+  --mat-paginator-enabled-icon-color: rgb(156 163 175);
 }
