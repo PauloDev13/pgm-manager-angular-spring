@@ -34,6 +34,8 @@ const initialCustomerStoreState: TCustomerStoreState = {
   err: null,
 };
 
+let resultId: number;
+
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
 
@@ -92,6 +94,29 @@ export const CustomerStore = signalStore(
               loaded: false,
               totalElements,
             });
+          },
+          error: (errorResp: HttpErrorResponse) =>
+            patchState(store, {
+              err: `Erro ao buscar dados. CODE: ${errorResp.status}`,
+              loaded: false,
+            }),
+        }),
+      ),
+    ),
+    deleteCustomer: rxMethod<{ id: number }>(
+      pipe(
+        tap(({ id }) => (resultId = id)),
+        switchMap(({ id }) => customerService.deleteCustomer(id)),
+        tapResponse({
+          next: () => {
+            const customers = store
+              .listCustomers()
+              .filter(customer => customer.id !== resultId);
+
+            patchState(store, {
+              listCustomers: customers,
+            });
+            console.log('Excluiu');
           },
           error: (errorResp: HttpErrorResponse) =>
             patchState(store, {

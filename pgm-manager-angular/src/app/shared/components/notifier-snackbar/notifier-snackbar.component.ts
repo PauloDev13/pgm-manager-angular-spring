@@ -8,7 +8,6 @@ import {
   MatSnackBarModule,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-notifier-snackbar',
@@ -30,14 +29,4 @@ export class NotifierSnackbarComponent {
   data: { message: string; buttonText: string } = inject(MAT_SNACK_BAR_DATA);
   snackBarRef: MatSnackBarRef<NotifierSnackbarComponent> =
     inject(MatSnackBarRef);
-
-  onYes() {
-    this.snackBarRef.dismiss();
-    this.snackBarRef
-      .afterDismissed()
-      .pipe(take(1))
-      .subscribe({
-        next: () => console.log('CLICOU EM SIM'),
-      });
-  }
 }

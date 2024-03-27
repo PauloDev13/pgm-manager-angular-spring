@@ -15,3 +15,9 @@ export type TUtilState = {
   availableBadges: string[];
   err: string | null;
 };
+
+export type TDataSnackbar = {
+  displayMsg: string;
+  installmentId: number;
+  cssType: 'delete-snackbar' | 'finish-snackbar';
+};

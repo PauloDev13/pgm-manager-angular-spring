@@ -9,6 +9,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { SearchComponent } from '../../../core/components/search/search.component';
 import { LoaderSpinnerComponent } from '../../../shared/components/loader-spinner/loader-spinner.component';
+import { NotifierService } from '../../../shared/service/notifier.service';
 import { TSearchQuery } from '../../../shared/types/shared.type';
 import { InstallmentListModel } from '../../model/installment-list.model';
 import { InstallmentStore } from '../../store/installment.store';
@@ -34,6 +35,7 @@ export default class InstallmentListComponent {
   // Variables
   protected pageIndex: number = 0;
   protected pageSize: number = 10;
+  private notifierService = inject(NotifierService);
   private filter = viewChild.required(MatButtonToggleGroup);
   private querySearch!: Partial<TSearchQuery>;
 
@@ -72,14 +74,12 @@ export default class InstallmentListComponent {
   }
 
   updateStatus(installment: InstallmentListModel) {
-    if (
-      confirm(
-        `FINALIZAR O ATENDIMENTO PARA: ${installment.customer.name.toUpperCase()}`,
-      )
-    ) {
-      this.installmentStore.updateStatus({ id: installment.id });
-      this.updateFilter({ ...this.querySearch, query: '' });
-    }
+    // chama o Snackbar de confirmação passando os parâmetros.
+    this.notifierService.showConfirmation({
+      displayMsg: `FINALIZAR O ATENDIMENTO DE ${installment.customer.name.toUpperCase()}?`,
+      installmentId: installment.id,
+      cssType: 'finish-snackbar',
+    });
   }
 
   onFilterInstallments(event: MatButtonToggleChange) {
@@ -95,7 +95,6 @@ export default class InstallmentListComponent {
       size: this.pageSize,
       status,
     };
-    console.log('QUERY', this.querySearch);
     // atualiza o filtro que dispara a pesquisa no banco de dados
     this.updateFilter(this.querySearch);
     // atualiza o filtro para 'pending' ou 'finished'

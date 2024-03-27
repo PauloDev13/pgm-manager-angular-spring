@@ -27,4 +27,8 @@ export class CustomerService {
       })
       .pipe(first());
   }
+
+  deleteCustomer(id: number) {
+    return this.http.delete<void>(`${this.baseUrlApi}/${id}`);
+  }
 }

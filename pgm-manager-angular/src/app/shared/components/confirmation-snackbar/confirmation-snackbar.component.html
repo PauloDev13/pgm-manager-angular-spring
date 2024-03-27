@@ -1,0 +1,18 @@
+<div class="flex-col justify-center grid grid-rows-3 grid-flow-col">
+  <div class="text-white">
+    ATENÇÃO:
+  </div>
+  <div class="col-span-1">{{ data.message }}</div>
+  <div class="col-span-3 flex justify-center gap-2">
+    <button
+      (click)="snackBarRef.dismiss()"
+      mat-flat-button>
+      NÃO
+    </button>
+    <button
+      (click)="onYes()"
+      color="primary" mat-flat-button>
+      SIM
+    </button>
+  </div>
+</div>

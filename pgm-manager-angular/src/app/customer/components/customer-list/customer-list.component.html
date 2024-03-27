@@ -31,7 +31,7 @@
                 {{ customer.document }}
               </td>
               <td class="px-4 py-1.5 text-right">
-                <button class="font-medium text-red-600 dark:text-red-500 hover:underline">
+                <button (click)="onDeleteCustomer(customer.id!)" class="font-medium text-red-600 dark:text-red-500 hover:underline">
                   Excluir
                 </button>
                 <button (click)="onAddInstallment(customer)"

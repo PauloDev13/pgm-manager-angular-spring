@@ -71,11 +71,10 @@ export class InstallmentFormComponent implements OnInit {
           size: 10,
         });
         this.notifierService.showNotification(
-          `Atendimento criado para: (${this.customerInfo.name}`,
+          `Atendimento criado para: ${this.customerInfo.name.toUpperCase()}`,
           'X',
           'success-snackbar',
         );
-        console.log(`Atendimento criado para: (${this.customerInfo.name}`);
       });
     }
     this.formInstallment.markAllAsTouched();

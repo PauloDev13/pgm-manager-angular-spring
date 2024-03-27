@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { InstallmentStore } from '../../../installment/store/installment.store';
 import { FormUtilsService } from '../../../shared/form/form-utils.service';
+import { NotifierService } from '../../../shared/service/notifier.service';
 import { UtilService } from '../../../shared/service/util.service';
 import { CustomAsynchronousValidationService } from '../../../shared/utils/custom-asynchronous- validation.service';
 import { CustomerStore } from '../../store/custumer.store';
@@ -30,7 +31,6 @@ export default class CustomerFormComponent {
   protected readonly utilService = inject(UtilService);
   protected readonly customerStore = inject(CustomerStore);
   protected readonly installmentStore = inject(InstallmentStore);
-  // Variables
   // form customer
   protected formCustomer = this.fb.group({
     customer: this.fb.group({
@@ -50,6 +50,8 @@ export default class CustomerFormComponent {
       finished: [false],
     }),
   });
+  // Variables
+  private notifierSnackbar = inject(NotifierService);
   private readonly route = inject(Router);
 
   onSubmit() {
@@ -66,7 +68,12 @@ export default class CustomerFormComponent {
           page: 0,
           size: 10,
         });
-        console.log(`Usuário ${customer.name} cadastrado(a) com sucesso`);
+        this.notifierSnackbar.showNotification(
+          `Usuário ${customer.name.toUpperCase()} cadastrado(a) com sucesso`,
+          'OK',
+          'success-snackbar',
+        );
+        // console.log(`Usuário ${customer.name} cadastrado(a) com sucesso`);
       });
     }
 

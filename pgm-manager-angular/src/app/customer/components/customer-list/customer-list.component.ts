@@ -70,4 +70,14 @@ export class CustomerListComponent {
       size: this.pageSize,
     });
   }
+
+  onDeleteCustomer(customerId: number) {
+    this.notifierService.showConfirmation({
+      installmentId: customerId,
+      displayMsg: `Ao remover um cliente, também serão removidos
+      todos os atendimentos a ele vinculados.
+      Confirma a exclusão?`,
+      cssType: 'delete-snackbar',
+    });
+  }
 }
