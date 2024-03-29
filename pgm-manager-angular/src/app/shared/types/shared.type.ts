@@ -18,6 +18,5 @@ export type TUtilState = {
 
 export type TDataSnackbar = {
   displayMsg: string;
-  installmentId: number;
   cssType: 'delete-snackbar' | 'finish-snackbar';
 };

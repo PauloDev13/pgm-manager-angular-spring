@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 import { SearchComponent } from '../../../core/components/search/search.component';
 import { InstallmentStore } from '../../../installment/store/installment.store';
@@ -72,12 +73,21 @@ export class CustomerListComponent {
   }
 
   onDeleteCustomer(customerId: number) {
-    this.notifierService.showConfirmation({
-      installmentId: customerId,
-      displayMsg: `Ao remover um cliente, também serão removidos
+    this.notifierService
+      .showConfirmation({
+        displayMsg: `Ao remover um cliente, também serão removidos
       todos os atendimentos a ele vinculados.
       Confirma a exclusão?`,
-      cssType: 'delete-snackbar',
-    });
+        cssType: 'delete-snackbar',
+      })
+      .afterDismissed()
+      .pipe(take(1))
+      .subscribe({
+        next: action => {
+          if (action.dismissedByAction) {
+            this.customerStore.deleteCustomer({ id: customerId });
+          }
+        },
+      });
   }
 }

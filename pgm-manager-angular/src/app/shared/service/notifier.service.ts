@@ -28,15 +28,14 @@ export class NotifierService {
     });
   }
 
-  showConfirmation(params: TDataSnackbar) {
-    this.snackBar.openFromComponent(ConfirmationSnackbarComponent, {
+  showConfirmation({ displayMsg, cssType }: TDataSnackbar) {
+    return this.snackBar.openFromComponent(ConfirmationSnackbarComponent, {
       data: {
-        message: params.displayMsg,
-        id: params.installmentId,
+        message: displayMsg,
       },
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: params.cssType,
+      panelClass: cssType,
     });
   }
 }

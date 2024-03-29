@@ -108,7 +108,7 @@ export const InstallmentStore = signalStore(
           switchMap(({ id }) => installmentService.updateStatus(id)),
           tapResponse({
             next: respInstallment => {
-              const updatedInstallment = store
+              const updatedInstallments = store
                 .listInstallments()
                 .map(dataInstallment => {
                   return dataInstallment.id === respInstallment.id
@@ -117,7 +117,7 @@ export const InstallmentStore = signalStore(
                 });
               patchState(store, {
                 installment: respInstallment,
-                listInstallments: updatedInstallment,
+                listInstallments: updatedInstallments,
                 err: null,
               });
             },
@@ -138,13 +138,13 @@ export const InstallmentStore = signalStore(
           ),
           tapResponse({
             next: installment => {
-              const installmentsUpdated = [
+              const UpdatedInstallments = [
                 ...store.listInstallments(),
                 installment,
               ];
               patchState(store, {
                 installment,
-                listInstallments: installmentsUpdated,
+                listInstallments: UpdatedInstallments,
                 loaded: false,
                 err: null,
               });
@@ -173,7 +173,6 @@ export const InstallmentStore = signalStore(
   })),
   withHooks({
     onInit({ loadSearchPagination, searchQuery }) {
-      console.log('QUERY 2', searchQuery());
       loadSearchPagination(searchQuery);
     },
   }),

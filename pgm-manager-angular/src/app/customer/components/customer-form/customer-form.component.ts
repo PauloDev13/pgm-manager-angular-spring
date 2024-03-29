@@ -73,7 +73,6 @@ export default class CustomerFormComponent {
           'OK',
           'success-snackbar',
         );
-        // console.log(`Usuário ${customer.name} cadastrado(a) com sucesso`);
       });
     }
 

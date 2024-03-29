@@ -6,6 +6,7 @@ import {
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { take } from 'rxjs';
 
 import { SearchComponent } from '../../../core/components/search/search.component';
 import { LoaderSpinnerComponent } from '../../../shared/components/loader-spinner/loader-spinner.component';
@@ -75,11 +76,21 @@ export default class InstallmentListComponent {
 
   updateStatus(installment: InstallmentListModel) {
     // chama o Snackbar de confirmação passando os parâmetros.
-    this.notifierService.showConfirmation({
-      displayMsg: `FINALIZAR O ATENDIMENTO DE ${installment.customer.name.toUpperCase()}?`,
-      installmentId: installment.id,
-      cssType: 'finish-snackbar',
-    });
+    this.notifierService
+      .showConfirmation({
+        displayMsg: `FINALIZAR O ATENDIMENTO DE ${installment.customer.name.toUpperCase()}?`,
+        cssType: 'finish-snackbar',
+      })
+      .afterDismissed()
+      .pipe(take(1))
+      .subscribe({
+        next: action => {
+          if (action.dismissedByAction) {
+            this.installmentStore.updateStatus({ id: installment.id });
+            this.installmentStore.updateFilter(this.querySearch);
+          }
+        },
+      });
   }
 
   onFilterInstallments(event: MatButtonToggleChange) {
