@@ -41,7 +41,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .success-snackbar {
   border-radius: 5px;
-  outline: 3px solid rgba(4, 116, 32, 0.97);
+  outline: 3px solid rgb(156, 163, 175);
   --mdc-snackbar-container-color: rgba(31, 41, 55, 0.95);
   --mdc-snackbar-supporting-text-color: rgba(4, 116, 32, 0.97);
   --mdc-snackbar-supporting-text-weight: semibold;
@@ -49,7 +49,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .warning-snackbar {
   border-radius: 5px;
-  outline: 3px solid rgba(255, 165, 0, 0.97);
+  outline: 3px solid rgb(156, 163, 175);
   --mdc-snackbar-container-color: rgba(31, 41, 55, 0.97);
   --mdc-snackbar-supporting-text-color: rgb(255, 165, 0);
   --mdc-snackbar-supporting-text-weight: semibold;
@@ -57,7 +57,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .error-snackbar {
   border-radius: 5px;
-  outline: 3px solid rgba(251, 0, 0, 0.97);
+  outline: 3px solid rgb(156, 163, 175);
   --mdc-snackbar-container-color: rgba(31, 41, 55, 0.97);
   --mdc-snackbar-supporting-text-color: rgba(251, 0, 0, 0.97);
   --mdc-snackbar-supporting-text-weight: semibold;
@@ -65,7 +65,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .finish-snackbar {
   border-radius: 5px;
-  outline: 3px solid #ffffff;
+  outline: 2px solid rgb(156, 163, 175);
   --mdc-snackbar-container-color: rgba(31, 41, 55, 0.97);
   --mdc-snackbar-supporting-text-color: #fff;
   --mdc-snackbar-supporting-text-weight: semibold;

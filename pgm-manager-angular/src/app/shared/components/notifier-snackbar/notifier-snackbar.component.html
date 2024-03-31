@@ -1,12 +1,12 @@
-<div class="flex-col justify-around grid grid-rows-2 grid-flow-col">
-  <div class="text-white">
+<div class="grid grid-col-3">
+  <div class="col-start-1 col-span-3 flex justify-between items-center text-white">
     ATENÇÃO:
+    <button
+      (click)="snackBarRef.dismiss()"
+      class="mat-button"
+      mat-mini-fab>
+      {{ data.buttonText }}
+    </button>
   </div>
-  <div class="col-span-2">{{ data.message }}</div>
-  <button
-    (click)="snackBarRef.dismiss()"
-    class="mat-button col-span-2 row-span-2"
-    mat-mini-fab>
-    {{ data.buttonText }}
-  </button>
+  <div class="col-start-1 col-span-3">{{ data.message }}</div>
 </div>

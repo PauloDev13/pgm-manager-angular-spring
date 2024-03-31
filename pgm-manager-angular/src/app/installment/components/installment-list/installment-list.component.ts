@@ -2,10 +2,15 @@ import { DatePipe } from '@angular/common';
 import { Component, effect, inject, viewChild } from '@angular/core';
 import {
   MatButtonToggle,
-  MatButtonToggleChange,
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import {
+  MatRadioButton,
+  MatRadioChange,
+  MatRadioGroup,
+  MatRadioModule,
+} from '@angular/material/radio';
 import { take } from 'rxjs';
 
 import { SearchComponent } from '../../../core/components/search/search.component';
@@ -25,6 +30,9 @@ import { TInstallmentFilter } from '../../types/installment.type';
     SearchComponent,
     LoaderSpinnerComponent,
     MatButtonToggleGroup,
+    MatRadioGroup,
+    MatRadioButton,
+    MatRadioModule,
     MatButtonToggle,
   ],
   templateUrl: './installment-list.component.html',
@@ -78,7 +86,7 @@ export default class InstallmentListComponent {
     // chama o Snackbar de confirmação passando os parâmetros.
     this.notifierService
       .showConfirmation({
-        displayMsg: `FINALIZAR O ATENDIMENTO DE ${installment.customer.name.toUpperCase()}?`,
+        displayMsg: `Finalizar atendimento do cliente ${installment.customer.name.toUpperCase()}?`,
         cssType: 'finish-snackbar',
       })
       .afterDismissed()
@@ -87,13 +95,16 @@ export default class InstallmentListComponent {
         next: action => {
           if (action.dismissedByAction) {
             this.installmentStore.updateStatus({ id: installment.id });
-            this.installmentStore.updateFilter(this.querySearch);
+            this.installmentStore.updateFilter({
+              ...this.querySearch,
+              status: false,
+            });
           }
         },
       });
   }
 
-  onFilterInstallments(event: MatButtonToggleChange) {
+  onFilterInstallments(event: MatRadioChange) {
     const filter = event.value as TInstallmentFilter;
     let status: boolean = true;
 

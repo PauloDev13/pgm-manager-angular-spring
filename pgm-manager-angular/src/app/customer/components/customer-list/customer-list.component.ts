@@ -76,9 +76,8 @@ export class CustomerListComponent {
     this.notifierService
       .showConfirmation({
         displayMsg: `Ao remover um cliente, também serão removidos
-      todos os atendimentos a ele vinculados.
-      Confirma a exclusão?`,
-        cssType: 'delete-snackbar',
+      todos os atendimentos a ele vinculados. REMOVER CLIENTE?`,
+        cssType: 'finish-snackbar',
       })
       .afterDismissed()
       .pipe(take(1))

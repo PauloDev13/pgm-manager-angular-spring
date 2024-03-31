@@ -3,9 +3,15 @@
   color: rgb(156 163 175);
 }
 
-
-
 .mat-button-toggle {
   color: white;
   background-color: rgb(31 41 55) ;
+}
+
+.mat-mdc-radio-button {
+  --mdc-form-field-label-text-color: #d7d5d5;
+  --mdc-radio-selected-icon-color: #d7d5d5;
+  --mdc-radio-selected-hover-icon-color: #747272;
+  --mdc-radio-unselected-hover-icon-color: #747272 ;
+  --mdc-radio-selected-pressed-icon-color: rgb(30, 58, 138);
 }

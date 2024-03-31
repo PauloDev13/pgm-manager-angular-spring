@@ -1,9 +1,11 @@
-<div class="flex-col justify-center grid grid-rows-3 grid-flow-col">
-  <div class="text-white">
+<div class="grid grid-col-3 w-96">
+  <div class="col-span-3 p-2 border-2 border-gray-500 rounded-lg">
     ATENÇÃO:
   </div>
-  <div class="col-span-1">{{ data.message }}</div>
-  <div class="col-span-3 flex justify-center gap-2">
+  <div class="col-span-3 mt-2 p-2 border-2 border-gray-500 rounded-lg text-lg">
+    {{ data.message }}
+  </div>
+  <div class="col-span-3 flex justify-center mt-2 p-2 border-2 border-gray-500 rounded-lg gap-2">
     <button
       (click)="snackBarRef.dismiss()"
       mat-flat-button>
