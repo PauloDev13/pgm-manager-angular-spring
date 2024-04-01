@@ -1,17 +1,18 @@
 <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8
             dark:bg-gray-800 dark:border-gray-700 my-20 mx-auto">
 
-  <form class="space-y-6">
-    <h5 class="text-xl font-medium text-gray-900 dark:text-white">Acesso</h5>
+  <form (submit)="onSubmit()" [formGroup]="formLogin" class="space-y-6">
+    <h5 class="text-xl font-medium text-gray-900 dark:text-white">Acesso ao Sistema</h5>
     <div class="relative z-0 w-full mb-5 group">
       <input
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent
             border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
             dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        formControlName="username"
         id="username"
-        name="username"
         placeholder=" "
         type="Text"/>
+
       <label
         class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400
             duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
@@ -21,9 +22,15 @@
         for="username">
         Usuário
       </label>
-      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-        <span class="font-medium">Atenção! </span>Usuário é obrigatório
-      </p>
+
+      @if (formLogin.controls.username.invalid &&
+           formLogin.controls.username.touched) {
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * Usuário é obrigatório
+            </span>
+        </p>
+      }
     </div>
 
     <div class="relative z-0 w-full mb-5 group">
@@ -31,10 +38,12 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2
              border-gray-300 appearance-none dark:text-white dark:border-gray-600
              dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        formControlName="password"
         id="password"
-        name="password"
         placeholder=" "
         type="password"/>
+
+
       <label
         class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
             transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
@@ -44,16 +53,24 @@
         for="password">
         Password
       </label>
-      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-        <span class="font-medium">Atenção! </span>Senha é obrigatório
-      </p>
+
+      @if (formLogin.controls.password.invalid &&
+      formLogin.controls.password.touched) {
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            <span class="font-medium">
+              * Senha é obrigatória
+            </span>
+        </p>
+      }
+
     </div>
     <button
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
-          focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
-          dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100
+              focus:ring-2 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2
+              dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700
+              dark:hover:border-gray-600 dark:hover:text-gray-100 dark:focus:ring-gray-400"
       type="submit">
-      Submit
+      ENTRAR
     </button>
   </form>
 </div>
